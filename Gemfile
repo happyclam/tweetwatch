@@ -26,8 +26,14 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-group :development do
+group :development, :test do
   gem 'sqlite3'
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'selenium-webdriver'
+  gem 'capybara'
 end
 
 group :production do

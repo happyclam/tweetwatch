@@ -9,4 +9,20 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Tweetwatch::Application.config.secret_key_base = 'eb302d99d9ba05d92fd146fd276aff78650d07c1014cf174bd93a02388407fef703baa579977555da5567d83be7392605b36719fdfc96c7213a30a4cde26d4ab'
+
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
+Tweetwatch::Application.config.secret_key_base = secure_token
