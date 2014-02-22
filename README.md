@@ -1,11 +1,12 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+Twitter Streaming APIを使って特定のタグを付けられたツイートを監視し、
+そのツイート内容に応じてツイート数を集計するアプリケーション
+※DBに保存しないで集計するため何らかの原因でtwitterの接続が切れた場合はまた一から集計
 
 * Ruby version
+2.0.0p353
+Rails 4.0.2
 
 * System dependencies
 
