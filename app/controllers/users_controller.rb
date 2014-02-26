@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :signed_in_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update]
 
   # GET /users
   # GET /users.json
@@ -33,7 +35,6 @@ class UsersController < ApplicationController
       if @user.save
         sign_in @user
         flash[:success] = "Welcome to the Tweet Watch App!"
-#        redirect_to @user
 #        format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.html { redirect_to @user }
         format.json { render action: 'show', status: :created, location: @user }
@@ -49,7 +50,9 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        flash[:success] = "Profile updated"
+#        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -78,4 +81,18 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
+
+    def signed_in_user
+p "users.signed_in_user"
+      unless signed_in?
+        store_location
+        redirect_to signin_url, notice: "Please sign in." unless signed_in?
+      end
+    end
+    def correct_user
+p "users.correct_user"
+      @user = User.find(params[:id])
+      redirect_to(root_path) unless current_user?(@user)
+    end
+
 end
