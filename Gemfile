@@ -17,6 +17,10 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+gem 'faker'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.1.2'
 # Use unicorn as the app server
