@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140225114212) do
+ActiveRecord::Schema.define(version: 20140303020746) do
 
   create_table "tracks", force: true do |t|
     t.string   "tag"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140225114212) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
+    t.boolean  "admin",           default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
