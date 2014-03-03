@@ -16,10 +16,36 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token)}
   it { should respond_to(:authenticate) }
+  
+  it { should respond_to(:admin) }
+  it { should respond_to(:tracks) }
 
   it { should be_valid }
   it { should_not be_admin }
 
+  describe "track associations" do
+    before { @user.save }
+    let!(:older_track) do
+      FactoryGirl.create(:track, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_track) do
+      FactoryGirl.create(:track, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right tracks in the right order" do
+      expect(@user.tracks.to_a).to eq [newer_track, older_track]
+    end
+
+    it "should destroy associated tracks" do
+      tracks = @user.tracks.to_a
+      @user.destroy
+      expect(tracks).not_to be_empty
+      tracks.each do |track|
+        expect(Track.where(id: track.id)).to be_empty
+      end
+    end
+
+  end
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!

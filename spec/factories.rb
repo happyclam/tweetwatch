@@ -8,4 +8,9 @@ FactoryGirl.define do
       admin true
     end
   end
+  factory :track do
+    tag "Lorem ipsum"
+    user
+  end
+
 end

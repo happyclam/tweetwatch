@@ -6,5 +6,6 @@ class CreateTracks < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :tracks, [:user_id, :created_at]
   end
 end
