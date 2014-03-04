@@ -1,0 +1,8 @@
+<%= form_for(@track) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="field">
+    <%= f.label :tag %>
+    <%= f.text_field :tag %>
+  </div>
+  <%= f.submit "Post", class: "btn btn-middle btn-primary" %>
+<% end %>

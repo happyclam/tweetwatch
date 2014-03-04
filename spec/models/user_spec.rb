@@ -19,6 +19,7 @@ describe User do
   
   it { should respond_to(:admin) }
   it { should respond_to(:tracks) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -45,6 +46,14 @@ describe User do
       end
     end
 
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:track, user: FactoryGirl.create(:user))
+      end
+      its(:feed) {should include(newer_track)}
+      its(:feed) {should include(older_track)}
+      its(:feed) {should_not include(unfollowed_post)}
+    end
   end
   describe "with admin attribute set to 'true'" do
     before do

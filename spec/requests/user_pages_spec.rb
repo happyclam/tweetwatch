@@ -57,10 +57,18 @@ describe "UserPages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:t1) {FactoryGirl.create(:track, user: user, tag: "Foo")}
+    let!(:t2) {FactoryGirl.create(:track, user: user, tag: "Bar")}
     before { visit user_path(user) }
 
     it { should have_content(user.name) }
     it { should have_title(user.name) }
+
+    describe "tracks" do
+      it {should have_content(t1.tag)}
+      it {should have_content(t2.tag)}
+      it {should have_content(user.tracks.count)}
+    end
   end
   describe "signup page" do
     before { visit signup_path }

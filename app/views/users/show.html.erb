@@ -1,6 +1,6 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="span4">
+  <aside class="col col-md-4">
     <section>
       <h1>
         <%= gravatar_for @user %>
@@ -8,4 +8,14 @@
       </h1>
     </section>
   </aside>
+  <div class="col col-md-8">
+    <% if @user.tracks.any? %>
+      <h3>Tracks (<%= @user.tracks.count %>)</h3>
+      <ol class="tracks">
+        <%= render @tracks %>
+      </ol>
+      <%= will_paginate @tracks %>
+    <% end %>
+  </div>
+
 </div>

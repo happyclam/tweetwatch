@@ -1,54 +1,29 @@
 class TracksController < ApplicationController
-  before_action :set_track, only: [:show, :edit, :update, :destroy]
-
-  # GET /tracks
-  # GET /tracks.json
-  def index
-    @tracks = Track.all
-  end
-
-  # GET /tracks/1
-  # GET /tracks/1.json
-  def show
-  end
-
-  # GET /tracks/new
-  def new
-    @track = Track.new
-  end
-
-  # GET /tracks/1/edit
-  def edit
-  end
+#  before_action :set_track, only: [:show, :edit, :update, :destroy]
+  before_action :signed_in_user
 
   # POST /tracks
   # POST /tracks.json
   def create
-    @track = Track.new(track_params)
-
-    respond_to do |format|
-      if @track.save
-        format.html { redirect_to @track, notice: 'Track was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @track }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @track.errors, status: :unprocessable_entity }
-      end
+    @track = current_user.tracks.build(track_params)
+    if @track.save
+      flash[:success] = "Track created!"
+      redirect_to root_url
+    else
+      @feed_items = []
+      render 'static_pages/home'
     end
-  end
+    # @track = Track.new(track_params)
 
-  # PATCH/PUT /tracks/1
-  # PATCH/PUT /tracks/1.json
-  def update
-    respond_to do |format|
-      if @track.update(track_params)
-        format.html { redirect_to @track, notice: 'Track was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @track.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @track.save
+    #     format.html { redirect_to @track, notice: 'Track was successfully created.' }
+    #     format.json { render action: 'show', status: :created, location: @track }
+    #   else
+    #     format.html { render action: 'new' }
+    #     format.json { render json: @track.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # DELETE /tracks/1
@@ -62,13 +37,7 @@ class TracksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_track
-      @track = Track.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
     def track_params
-      params.require(:track).permit(:tag, :user_id)
+      params.require(:track).permit(:tag)
     end
 end

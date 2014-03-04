@@ -20,5 +20,11 @@ namespace :db do
                    password: password,
                    password_confirmation: password)
     end
+    
+    users = User.all(limit: 6)
+    50.times do
+      tag = "#" + Faker::Name.name
+      users.each{|user| user.tracks.create!(tag: tag)}
+    end
   end
 end

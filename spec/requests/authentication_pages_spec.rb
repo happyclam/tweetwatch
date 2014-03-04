@@ -54,6 +54,16 @@ describe "AuthenticationPages" do
     end
     describe "for non-signed-in users" do
       let(:user) {FactoryGirl.create(:user)}
+      describe "in the Tracks controller" do
+        describe "submitting to the create action" do
+          before {post tracks_path}
+          specify {expect(response).to redirect_to(signin_path)}
+        end
+        describe "submitting to the destroy action" do
+          before {delete track_path(FactoryGirl.create(:track))}
+          specify {expect(response).to redirect_to(signin_path)}
+        end
+      end
       describe "in the Users controller" do
         describe "visiting the edit page" do
           before { visit edit_user_path(user) }

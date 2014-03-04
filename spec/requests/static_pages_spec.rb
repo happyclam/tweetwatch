@@ -12,6 +12,22 @@ describe "StaticPages" do
     it "should not have a custom page title" do
       expect(page).not_to have_title('| Home')
     end
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:track, user: user, tag: "#都知事選")
+        FactoryGirl.create(:track, user: user, tag: "#大阪市長選")
+        sign_in user
+        visit root_path
+      end
+
+      it "should render the user's feed" do
+        user.feed.each do |item|
+          expect(page).to have_selector("li##{item.id}", text: item.tag)
+        end
+      end
+    end
   end
   describe "Contact page" do
     before { visit contact_path }
