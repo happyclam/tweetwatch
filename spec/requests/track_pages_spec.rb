@@ -24,5 +24,16 @@ describe "TrackPages" do
       end
     end
   end
+  describe "track destruction" do
+    before { FactoryGirl.create(:track, user: user) }
+
+    describe "as correct user" do
+      before { visit root_path }
+
+      it "should delete a track" do
+        expect { click_link "delete" }.to change(Track, :count).by(-1)
+      end
+    end
+  end
   
 end

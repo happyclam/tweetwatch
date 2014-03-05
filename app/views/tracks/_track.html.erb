@@ -1,6 +1,9 @@
 <li>
-  <span class="content"><%= track.tag %></span>
+  <span class="track"><%= track.tag %></span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(track.created_at) %> ago.
   </span>
+  <% if current_user?(track.user) %>
+    <%= link_to "delete", track, method: :delete, data: {confirm: "You sure?"}, title: track.tag %>
+  <% end %>
 </li>
