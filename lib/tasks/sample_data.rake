@@ -5,12 +5,12 @@ namespace :db do
                          email: "example@railstutorial.jp",
                          password: "foobar",
                          password_confirmation: "foobar",
-                         admin: true)
+                         admin: false)
     aiueo = User.create!(name: "aiueo",
                          email: "aiueo@gmail.com",
                          password: "aiueoa",
                          password_confirmation: "aiueoa",
-                         admin: false)
+                         admin: true)
     99.times do |n|
       name  = Faker::Name.name
       email = "example-#{n+1}@railstutorial.jp"
@@ -26,5 +26,13 @@ namespace :db do
       tag = "#" + Faker::Name.name
       users.each{|user| user.tracks.create!(tag: tag)}
     end
+  end
+
+  task products: :environment do
+    aiueo = User.create!(name: "aiueo",
+                         email: "aiueo@gmail.com",
+                         password: "aiueoa",
+                         password_confirmation: "aiueoa",
+                         admin: true)
   end
 end
