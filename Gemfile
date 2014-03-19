@@ -31,10 +31,14 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'foreman'
+gem 'twitter-stream'
+
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec-rails'
   gem 'rails-erd'
+  gem 'taps'
 end
 
 group :test do
