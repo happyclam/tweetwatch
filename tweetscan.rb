@@ -42,6 +42,7 @@ EventMachine::run {
 #    $stdout.flush
 
     tw_json = JSON.parse(item)
+#    tw_json = JSON.parse(item, {:symbolize_names => true})
 
     user_id                         = tw_json['user']['id_str']
     user_name                       = tw_json['user']['name'].gsub(/\\/, '\&\&').gsub(/'/, "''")
