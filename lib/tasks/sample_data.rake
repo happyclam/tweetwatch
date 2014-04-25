@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
@@ -11,7 +12,50 @@ namespace :db do
                          password: "aiueoa",
                          password_confirmation: "aiueoa",
                          admin: true)
-    99.times do |n|
+    contents = []
+    contents << "宇都宮"    
+    contents << "細川"    
+    8.times do
+      contents << Faker::Lorem.characters(20)
+    end
+
+    tags = []
+    tags << "#都知事選"    
+    tags << "#NHK"    
+    8.times do
+      tags << "#" + Faker::Name.title
+    end
+
+    tracks = []                         
+    tracks << {:text=>"都知事選", :indices=>[125, 130]}
+    tracks << {:text=>"NHK", :indices=>[100, 110]}
+    8.times do
+      tracks << {:text=>(Faker::Lorem.characters(10)), :indices=>[125, 130]}
+    end
+    50.times.each_with_index do |idx|
+        n = rand(10)
+        if n == 0 || n == 1
+          tag = tags[n]
+          content = contents[rand(2)]
+        else
+          tag = tags[rand(10)]
+          content = contents[rand(10)]
+        end
+        tweet = Tweet.create(user_id: idx + 1,
+                         user_name: "ユーザ" + (idx + 1).to_s,
+                         user_screen_name: "user" + (idx + 1).to_s,
+                         user_description: Faker::Lorem.sentence(5),
+                         user_text: content + " " + tag,
+                         post_hashtags: tracks[rand(10)].to_json,
+                         status_id: idx + 1,
+                         reply_status_id: 0,
+                         reply_user_id: 0,
+                         reply_user_screen_name: ""
+                         )
+    end
+
+
+    30.times do |n|
       name  = Faker::Name.name
       email = "example-#{n+1}@railstutorial.jp"
       password  = "password"
@@ -22,10 +66,7 @@ namespace :db do
     end
     
     users = User.all(limit: 6)
-    50.times do
-      tag = "#" + Faker::Name.name
-      users.each{|user| user.tracks.create!(tag: tag)}
-    end
+    users.each{|user| user.tracks.create!(tag: tags[rand(10)])}
   end
 
   task products: :environment do

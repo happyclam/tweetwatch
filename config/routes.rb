@@ -1,6 +1,8 @@
 Tweetwatch::Application.routes.draw do
   root 'static_pages#home'
 
+  match '/tweets/track', :to => 'tweets#track', via: 'get'
+
   match '/signup',  to: 'users#new',            via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'
@@ -9,6 +11,7 @@ Tweetwatch::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :tracks, only: [:create, :destroy]
   resources :users
+#  resources :tweets
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
