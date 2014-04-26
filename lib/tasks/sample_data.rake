@@ -34,19 +34,22 @@ namespace :db do
     end
     50.times.each_with_index do |idx|
         n = rand(10)
+        #都知事選タグがついているものは、本文（content）に細川か宇都宮しか入らないようにする
         if n == 0 || n == 1
-          tag = tags[n]
-          content = contents[rand(2)]
+          tag = tags[n].clone
+          content = contents[rand(2)].clone
+          track = tracks[rand(2)].clone
         else
-          tag = tags[rand(10)]
-          content = contents[rand(10)]
+          tag = tags[n].clone
+          content = contents[rand(10)].clone
+          track = tracks[rand(10)].clone
         end
         tweet = Tweet.create(user_id: idx + 1,
                          user_name: "ユーザ" + (idx + 1).to_s,
                          user_screen_name: "user" + (idx + 1).to_s,
                          user_description: Faker::Lorem.sentence(5),
                          user_text: content + " " + tag,
-                         post_hashtags: tracks[rand(10)].to_json,
+                         post_hashtags: track.to_json,
                          status_id: idx + 1,
                          reply_status_id: 0,
                          reply_user_id: 0,
