@@ -1,6 +1,6 @@
 <li>
   <% if current_user?(track.user) %>
-    <span class="track"><%= link_to(track.tag, tweets_track_path(:track => track.tag)) %></span>
+    <span class="track"><%= link_to(track.tag, tweets_track_path(:user => track.user, :track => track.tag)) %></span>
   <% else %>
     <span class="track"><%= track.tag %></span>
   <% end %>

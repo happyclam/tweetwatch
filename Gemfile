@@ -33,6 +33,7 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 
 gem 'foreman'
 gem 'twitter-stream'
+gem 'lazy_high_charts'
 
 group :development, :test do
   gem 'sqlite3'

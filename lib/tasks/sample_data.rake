@@ -32,7 +32,7 @@ namespace :db do
     8.times do
       tracks << {:text=>(Faker::Lorem.characters(10)), :indices=>[125, 130]}
     end
-    50.times.each_with_index do |idx|
+    200.times.each_with_index do |idx|
         n = rand(10)
         #都知事選タグがついているものは、本文（content）に細川か宇都宮しか入らないようにする
         if n == 0 || n == 1
@@ -68,8 +68,8 @@ namespace :db do
                    password_confirmation: password)
     end
     
-    users = User.all(limit: 6)
-    users.each{|user| user.tracks.create!(tag: tags[rand(10)])}
+    users = User.all(limit: 10)
+    users.each_with_index{|user, idx| user.tracks.create!(tag: tags[idx])}
   end
 
   task products: :environment do
