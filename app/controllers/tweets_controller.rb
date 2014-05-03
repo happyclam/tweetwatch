@@ -1,5 +1,23 @@
 # -*- coding:utf-8 -*-
+require "pp"
 class TweetsController < ApplicationController
+  def store
+    session[:current_track] = params["track_id"]
+    user_id = params["user"]
+    # localhost = Net::Telnet::new("Host" => "localhost",
+    #                          "Port" => 10000,
+    #                          "Timeout" => 5,
+    #                          "Telnetmode" => false,
+    #                          "Output_log" => "./temp0.log",
+    #                          "Prompt" => nil)
+    # localhost.cmd("stop") { |c| print c }
+    # localhost.close
+    # localhost = nil
+
+    return redirect_to (user_id) ? user_path(user_id) : root_path
+
+  end
+
   def track
 #    render :text => "params=#{params.to_s}"
     @id = params["user"]
@@ -11,7 +29,7 @@ class TweetsController < ApplicationController
     @data = []
     
     ret.each{|key, val|
-      @categories << key
+      @categories << key[0..40]
       @data << val
     }
 

@@ -12,5 +12,10 @@
   <% if current_user?(feed_item.user) %>
     <%= link_to "delete", feed_item, method: :delete, data: {confirm: "You sure?"}, 
                                                       title: feed_item.tag %>
+    <br />
+    <% if current_user.admin? %>
+      <%= ((session[:current_track].to_i == feed_item.id) ? "○" : "　") %>
+      <%= link_to("集計開始", tweets_store_path(:track => feed_item.tag, :track_id => feed_item.id)) %>
+    <% end %>
   <% end %>
 </li>

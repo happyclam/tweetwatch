@@ -2,6 +2,7 @@ Tweetwatch::Application.routes.draw do
   root 'static_pages#home'
 
   match '/tweets/track', :to => 'tweets#track', via: 'get'
+  match '/tweets/store', :to => 'tweets#store', via: 'get'
 
   match '/signup',  to: 'users#new',            via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'

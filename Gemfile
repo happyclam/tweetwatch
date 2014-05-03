@@ -32,8 +32,12 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 # gem 'debugger', group: [:development, :test]
 
 gem 'foreman'
+#gem 'foreman_restartable'
+gem 'rerun'
+gem 'rb-fsevent'
 gem 'twitter-stream'
 gem 'lazy_high_charts'
+
 
 group :development, :test do
   gem 'sqlite3'

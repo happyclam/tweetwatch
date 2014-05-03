@@ -9,5 +9,10 @@
   </span>
   <% if current_user?(track.user) %>
     <%= link_to "delete", track, method: :delete, data: {confirm: "You sure?"}, title: track.tag %>
+    <br />
+    <% if current_user.admin? %>
+      <%= ((session[:current_track].to_i == track.id) ? "○" : "　") %>
+      <%= link_to("集計開始", tweets_store_path(:track => track.tag, :track_id => track.id, :user => track.user)) %>
+    <% end %>
   <% end %>
 </li>

@@ -22,20 +22,22 @@ namespace :db do
     tags = []
     tags << "#都知事選"    
     tags << "#NHK"    
-    8.times do
+    tags << "#fujitv"    
+    7.times do
       tags << "#" + Faker::Name.title
     end
 
     tracks = []                         
     tracks << {:text=>"都知事選", :indices=>[125, 130]}
     tracks << {:text=>"NHK", :indices=>[100, 110]}
-    8.times do
+    tracks << {:text=>"fujitv", :indices=>[100, 110]}
+    7.times do
       tracks << {:text=>(Faker::Lorem.characters(10)), :indices=>[125, 130]}
     end
     200.times.each_with_index do |idx|
         n = rand(10)
         #都知事選タグがついているものは、本文（content）に細川か宇都宮しか入らないようにする
-        if n == 0 || n == 1
+        if n == 0
           tag = tags[n].clone
           content = contents[rand(2)].clone
           track = tracks[rand(2)].clone
