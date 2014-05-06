@@ -52,13 +52,12 @@ class TweetsController < ApplicationController
       localhost.cmd(params["track"]) { |c| print c }
       localhost.close
       localhost = nil
-      @current_track = params["track_id"]
+      session[:current_track] = params["track_id"]
     rescue
-      @current_track = $!
+      session[:current_track] = $!
 
     end
-    render
-#    return redirect_to (user_id) ? user_path(user_id) : root_path
+    return redirect_to params["user_flg"] ? user_path(user_id) : root_path
 
   end
 

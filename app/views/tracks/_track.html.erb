@@ -10,11 +10,11 @@
   <% if current_user?(track.user) %>
     <%= link_to "delete", track, method: :delete, data: {confirm: "You sure?"}, title: track.tag %>
     <br />
-    <div id="current_track">
+    <div id="current_track<%= track.id.to_s %>">
     </div>
     <% if current_user.admin? %>
-      <!-- <%= ((session[:current_track].to_i == track.id) ? "○" : "　") %> -->
-      <%= link_to("タグをセット", tweets_store_path(:track => track.tag, :track_id => track.id, :user => track.user, :format => :js), :remote => true) %>
+      <%= ((session[:current_track].to_i == track.id) ? "○" : "　") %>
+      <%= link_to("タグをセット", tweets_store_path(:track => track.tag, :track_id => track.id, :user => track.user, :user_flg => true)) %>
     <% end %>
   <% end %>
 </li>
