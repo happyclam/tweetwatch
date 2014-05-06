@@ -1,20 +1,64 @@
 # -*- coding:utf-8 -*-
-require "pp"
+require "net/telnet"
 class TweetsController < ApplicationController
-  def store
-    session[:current_track] = params["track_id"]
+  def start
     user_id = params["user"]
-    # localhost = Net::Telnet::new("Host" => "localhost",
-    #                          "Port" => 10000,
-    #                          "Timeout" => 5,
-    #                          "Telnetmode" => false,
-    #                          "Output_log" => "./temp0.log",
-    #                          "Prompt" => nil)
-    # localhost.cmd("stop") { |c| print c }
-    # localhost.close
-    # localhost = nil
+    @status_stop = nil
+    begin
+      @status_start = system("ruby myserv.rb -p #{10000 + user_id.to_i} &")
+    rescue
+      @status_start = false
+      p $!
+    end
+    render
+#    return redirect_to (user_id) ? user_path(user_id) : root_path
+    
+  end
 
-    return redirect_to (user_id) ? user_path(user_id) : root_path
+  def stop
+    user_id = params["user"]
+
+    @status_start = nil
+    begin
+      localhost = Net::Telnet::new("Host" => "localhost",
+                                   "Port" => 10000 + user_id.to_i,
+                                   "Timeout" => 3,
+                                   "Telnetmode" => false,
+                                   "Output_log" => "./output.log",
+                                   "Dump_log" => "./dump.log",
+                                   "Prompt" => "O.K.")
+      localhost.cmd("stop") { |c| print c }
+      localhost.close
+      localhost = nil
+      @status_stop = true
+    rescue
+      @status_stop = false
+      p $!
+    end
+    render
+#    return redirect_to (user_id) ? user_path(user_id) : root_path
+  end
+
+  def store
+    user_id = params["user"]
+    begin
+      localhost = Net::Telnet::new("Host" => "localhost",
+                                   "Port" => 10000 + user_id.to_i,
+                                   "Timeout" => 3,
+                                   "Telnetmode" => false,
+                                   "Output_log" => "./output.log",
+                                   "Dump_log" => "./dump.log",
+                                   "Prompt" => "O.K.")
+      localhost.cmd(params["track"]) { |c| print c }
+      localhost.close
+      localhost = nil
+      @current_track = params["track_id"]
+    rescue
+      @current_track = $!
+
+    end
+    render
+#    return redirect_to (user_id) ? user_path(user_id) : root_path
 
   end
 
