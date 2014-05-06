@@ -1,6 +1,31 @@
 # -*- coding:utf-8 -*-
 require "net/telnet"
 class TweetsController < ApplicationController
+  def check
+    user_id = params["user"]
+
+    @status_check = nil
+    begin
+      localhost = Net::Telnet::new("Host" => "localhost",
+                                   "Port" => 10000 + current_user.id,
+                                   "Timeout" => 3,
+                                   "Telnetmode" => false,
+                                   "Output_log" => "./output.log",
+                                   "Dump_log" => "./dump.log",
+                                   "Prompt" => "ack")
+      localhost.cmd("syn") { |c| print c }
+      localhost.close
+      localhost = nil
+      @status_check = true
+p "status_check="+@status_check.to_s
+    rescue
+      @status_check = false
+      p $!
+    end
+    render
+
+  end
+
   def start
     user_id = params["user"]
     @status_stop = nil
@@ -8,7 +33,6 @@ class TweetsController < ApplicationController
       @status_start = system("ruby myserv.rb -p #{10000 + user_id.to_i} &")
     rescue
       @status_start = false
-      p $!
     end
     render
 #    return redirect_to (user_id) ? user_path(user_id) : root_path
@@ -33,7 +57,6 @@ class TweetsController < ApplicationController
       @status_stop = true
     rescue
       @status_stop = false
-      p $!
     end
     render
 #    return redirect_to (user_id) ? user_path(user_id) : root_path
@@ -54,7 +77,7 @@ class TweetsController < ApplicationController
       localhost = nil
       session[:current_track] = params["track_id"]
     rescue
-      session[:current_track] = $!
+      session[:current_track] = $!.to_s
 
     end
     return redirect_to params["user_flg"] ? user_path(user_id) : root_path

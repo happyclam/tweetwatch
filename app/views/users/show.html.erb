@@ -1,3 +1,17 @@
+<%= javascript_tag do %>
+$(document).ready(function(){
+  $.ajax({url: '/tweets/check',
+      dataType: "html",
+      success: function(data) {
+        $('#server_status').html(data);
+      },
+      error: function(data) {
+        $('#server_status').html(data);
+      }
+  });
+});
+<% end %>
+
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="col col-md-4">
@@ -7,6 +21,10 @@
         <%= @user.name %>
       </h1>
     </section>
+    <!-- <div id="message"> -->
+    <!--   <%= flash.notice %> -->
+    <!--   <%= flash.alert %> -->
+    <!-- </div> -->
     <p>
       <%= link_to("集計開始", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
     </p>

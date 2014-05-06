@@ -7,13 +7,18 @@ class Serv < EM::Connection
   attr_accessor :track
   def post_init
     puts "myserv: init"
+    @track = ""
   end
 
   def receive_data(data)
     puts "myserv: receive"
-    track = data.chomp
-    puts track
-    send_data "O.K."
+    puts data
+    if data =~ /syn/i
+      send_data "ack"
+    else
+      @track = data.chomp
+      send_data "O.K."
+    end
     EM.stop if data =~ /stop/i
   end
 
@@ -27,9 +32,8 @@ class Serv < EM::Connection
 end
 
 EM.run do
-  track = ""
   EM.start_server("127.0.0.1", params["p"].to_i, Serv) do |conn|
-    track = conn.track
+    $stdout.print "track=" + conn.track + "\n"
   end
-  $stdout.print "track=" + track
+
 end
