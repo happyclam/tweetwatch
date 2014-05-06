@@ -23,4 +23,5 @@ doc/
 .secret
 .env
 cmd.txt
+*.log
 

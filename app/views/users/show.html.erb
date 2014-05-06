@@ -7,6 +7,14 @@
         <%= @user.name %>
       </h1>
     </section>
+    <p>
+      <%= link_to("集計開始", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
+    </p>
+    <p>
+      <%= link_to("集計中止", tweets_stop_path(:user => @user, :format => :js), :remote => true) %>
+    </p>
+    <div id="server_status">
+    </div>
   </aside>
   <div class="col col-md-8">
     <% if @user.tracks.any? %>
