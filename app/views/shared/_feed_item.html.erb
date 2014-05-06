@@ -13,8 +13,6 @@
     <%= link_to "delete", feed_item, method: :delete, data: {confirm: "You sure?"}, 
                                                       title: feed_item.tag %>
     <br />
-    <div id="current_track">
-    </div>
     <% if current_user.admin? %>
       <%= ((session[:current_track].to_i == feed_item.id) ? "○" : "　") %>
       <%= link_to("タグをセット", tweets_store_path(:track => feed_item.tag, :track_id => feed_item.id, :user => feed_item.user, :user_flg => nil)) %>
