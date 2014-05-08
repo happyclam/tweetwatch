@@ -14,8 +14,8 @@
                                                       title: feed_item.tag %>
     <br />
     <% if current_user.admin? %>
-      <%= ((session[:current_track].to_i == feed_item.id) ? "○" : "　") %>
-      <%= link_to("タグをセット", tweets_store_path(:track => feed_item.tag, :track_id => feed_item.id, :user => feed_item.user, :user_flg => nil)) %>
+      <%= ((session[:current_track] == feed_item.tag) ? "○" : "　") %>
+      <%= link_to("タグをセット", tweets_store_path(:track => feed_item.tag, :user => feed_item.user, :user_flg => nil)) %>
     <% end %>
   <% end %>
 </li>

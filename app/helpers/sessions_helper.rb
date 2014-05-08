@@ -4,6 +4,7 @@ module SessionsHelper
     cookies.permanent[:remember_token] = remember_token
     user.update_attribute(:remember_token, User.encrypt(remember_token))
     self.current_user = user
+    session.delete(:current_track)
   end
   def signed_in?
     !current_user.nil?
@@ -17,6 +18,7 @@ module SessionsHelper
 
   def sign_out
     self.current_user = nil
+    session.delete(:current_track)
     cookies.delete(:remember_token)
   end
 
