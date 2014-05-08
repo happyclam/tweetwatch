@@ -17,7 +17,6 @@ class TweetsController < ApplicationController
       localhost.close
       localhost = nil
       @status_check = true
-p "status_check="+@status_check.to_s
     rescue
       @status_check = false
       p $!
@@ -28,9 +27,15 @@ p "status_check="+@status_check.to_s
 
   def start
     user_id = params["user"]
-    @status_stop = nil
+    track = session["current_track"]
+    unless track
+      #      return redirect_back_or user_path(user_id)
+      flash[:alert] = "右側のリストから、タグを指定してください"
+      render :js => "window.location.href='"+user_path(user_id)+"'"
+      return
+    end
     begin
-      @status_start = system("ruby myserv.rb -p #{10000 + user_id.to_i} &")
+      @status_start = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
     rescue
       @status_start = false
     end
@@ -42,7 +47,6 @@ p "status_check="+@status_check.to_s
   def stop
     user_id = params["user"]
 
-    @status_start = nil
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + user_id.to_i,
@@ -65,17 +69,17 @@ p "status_check="+@status_check.to_s
   def store
     user_id = params["user"]
     begin
-      localhost = Net::Telnet::new("Host" => "localhost",
-                                   "Port" => 10000 + user_id.to_i,
-                                   "Timeout" => 3,
-                                   "Telnetmode" => false,
-                                   "Output_log" => "./output.log",
-                                   "Dump_log" => "./dump.log",
-                                   "Prompt" => "O.K.")
-      localhost.cmd(params["track"]) { |c| print c }
-      localhost.close
-      localhost = nil
-      session[:current_track] = params["track_id"]
+      # localhost = Net::Telnet::new("Host" => "localhost",
+      #                              "Port" => 10000 + user_id.to_i,
+      #                              "Timeout" => 3,
+      #                              "Telnetmode" => false,
+      #                              "Output_log" => "./output.log",
+      #                              "Dump_log" => "./dump.log",
+      #                              "Prompt" => "O.K.")
+      # localhost.cmd(params["track"]) { |c| print c }
+      # localhost.close
+      # localhost = nil
+      session[:current_track] = params["track"]
     rescue
       session[:current_track] = $!.to_s
 
