@@ -67,24 +67,8 @@ class TweetsController < ApplicationController
   end
 
   def store
-    user_id = params["user"]
-    begin
-      # localhost = Net::Telnet::new("Host" => "localhost",
-      #                              "Port" => 10000 + user_id.to_i,
-      #                              "Timeout" => 3,
-      #                              "Telnetmode" => false,
-      #                              "Output_log" => "./output.log",
-      #                              "Dump_log" => "./dump.log",
-      #                              "Prompt" => "O.K.")
-      # localhost.cmd(params["track"]) { |c| print c }
-      # localhost.close
-      # localhost = nil
-      session[:current_track] = params["track"]
-    rescue
-      session[:current_track] = $!.to_s
-
-    end
-    return redirect_to params["user_flg"] ? user_path(user_id) : root_path
+    session[:current_track] = params["track"]
+    return redirect_to user_path(params["user"])
 
   end
 

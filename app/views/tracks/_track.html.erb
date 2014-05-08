@@ -12,7 +12,7 @@
     <br />
     <% if current_user.admin? %>
       <%= ((session[:current_track] == track.tag) ? "○" : "　") %>
-      <%= link_to("タグをセット", tweets_store_path(:track => track.tag, :user => track.user, :user_flg => true)) %>
+      <%= link_to("タグをセット", tweets_store_path(:track => track.tag, :user => track.user)) %>
     <% end %>
   <% end %>
 </li>
