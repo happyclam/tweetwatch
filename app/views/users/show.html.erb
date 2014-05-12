@@ -1,22 +1,47 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
-  $.ajax({url: '/tweets/check',
-      dataType: "html",
-      success: function(data) {
-        if (data == "false") {
-          $('#server_status').html("status = 停止中");
-          $('#server_stop').hide();
-          $('#server_start').show();
-        } else {
-          $('#server_status').html("status = 待機中");
-          $('#server_start').hide();
-          $('#server_stop').show();
+  <% if session[:server_prepared] %>
+    $.ajax({url: '/tweets/check',
+        dataType: "html",
+        success: function(data) {
+          if (data == "false") {
+            $('#server_status').html("status = 待機中");
+            $('#server_start').hide();
+            $('#server_stop').hide();
+            $('#server_store').show();
+          } else {
+            $('#server_status').html("status = 集計中");
+            $('#server_start').hide();
+            $('#server_store').hide();
+            $('#server_stop').show();
+          }
+        },
+        error: function(data) {
+          alert('Error Occured(current_track=<%= session[:current_track].to_s %>)');
         }
-      },
-      error: function(data) {
-        alert('Error Occured');
-      }
-  });
+    });
+  <% else %>
+    $.ajax({url: '/tweets/check',
+        dataType: "html",
+        success: function(data) {
+          if (data == "false") {
+            $('#server_status').html("status = 停止中");
+            $('#server_store').hide();
+            $('#server_stop').hide();
+            $('#server_start').show();
+          } else {
+            $('#server_status').html("status = 待機中");
+            $('#server_start').hide();
+            $('#server_stop').hide();
+            $('#server_store').show();
+
+          }
+        },
+        error: function(data) {
+          alert('Error Occured(current_track=<%= session[:current_track].to_s %>)');
+        }
+    });
+  <% end %>
 });
 <% end %>
 
@@ -35,6 +60,9 @@ $(document).ready(function(){
       <div style="margin: 0px 0px 30px;"><span>※status = [待機中 | 停止中 | 集計中]</span></div>
       <div id="server_start">
         <%= link_to("サーバー起動", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
+      </div>
+      <div id="server_store">
+        <%= link_to("集計開始", tweets_store_path(:user => @user, :format => :js), :remote => true) %>
       </div>
       <div id="server_stop">
         <%= link_to("サーバー停止", tweets_stop_path(:user => @user, :format => :js), :remote => true) %>

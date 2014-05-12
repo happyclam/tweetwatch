@@ -1,6 +1,6 @@
 <li>
   <% if current_user?(track.user) %>
-    <span class="track"><%= link_to(track.tag, tweets_track_path(:user => track.user, :track => track.tag)) %></span>
+    <span class="track"><%= link_to(track.tag, tweets_graph_path(:user => track.user, :track => track.tag)) %></span>
   <% else %>
     <span class="track"><%= track.tag %></span>
   <% end %>
@@ -12,7 +12,7 @@
     <br />
     <% if current_user.admin? %>
       <%= ((session[:current_track] == track.tag) ? "○" : "　") %>
-      <%= link_to((session[:current_track] == track.tag) ? "集計開始" : "タグをセット", tweets_store_path(:track => track.tag, :user => track.user)) %>
+      <%= link_to("タグをセット", tweets_track_path(:track => track.tag, :user => track.user)) %>
     <% end %>
   <% end %>
 </li>
