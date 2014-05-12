@@ -82,7 +82,7 @@ EventMachine::run {
   end
 
   trap('TERM') {  
-    $stdout.pring "trap\n"
+    $stdout.print "trap\n"
     $stdout.flush
     stream.stop
     EventMachine.stop if EventMachine.reactor_running? 

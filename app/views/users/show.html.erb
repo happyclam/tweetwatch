@@ -8,9 +8,9 @@ $(document).ready(function(){
           $('#server_stop').hide();
           $('#server_start').show();
         } else {
-          $('#server_status').html("status = 稼働中");
-          $('#server_stop').show();
+          $('#server_status').html("status = 待機中");
           $('#server_start').hide();
+          $('#server_stop').show();
         }
       },
       error: function(data) {
@@ -29,18 +29,15 @@ $(document).ready(function(){
         <%= @user.name %>
       </h1>
     </section>
-    <div id="message">
-      <%= notice %>
-      <%= alert %>
-    </div>
-    <% if current_user.admin? %>
-      <div id="server_status" style="margin: 30px 0px;">
+    <% if current_user && current_user.admin? %>
+      <div id="server_status">
       </div>
+      <div style="margin: 0px 0px 30px;"><span>※status = [待機中 | 停止中 | 集計中]</span></div>
       <div id="server_start">
-        <%= link_to("集計開始", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
+        <%= link_to("サーバー起動", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
       </div>
       <div id="server_stop">
-        <%= link_to("集計中止", tweets_stop_path(:user => @user, :format => :js), :remote => true) %>
+        <%= link_to("サーバー停止", tweets_stop_path(:user => @user, :format => :js), :remote => true) %>
       </div>
     <% end %>
   </aside>

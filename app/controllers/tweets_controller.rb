@@ -8,7 +8,7 @@ class TweetsController < ApplicationController
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + current_user.id,
-                                   "Timeout" => 3,
+                                   "Timeout" => 1,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
                                    "Dump_log" => "./dump.log",
@@ -50,7 +50,7 @@ class TweetsController < ApplicationController
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + user_id.to_i,
-                                   "Timeout" => 3,
+                                   "Timeout" => 1,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
                                    "Dump_log" => "./dump.log",
@@ -68,6 +68,25 @@ class TweetsController < ApplicationController
 
   def store
     session[:current_track] = params["track"]
+
+    user_id = current_user.id
+p "user_id="+user_id.to_s
+    begin
+      localhost = Net::Telnet::new("Host" => "localhost",
+                                   "Port" => 10000 + user_id.to_i,
+                                   "Timeout" => 1,
+                                   "Telnetmode" => false,
+                                   "Output_log" => "./output.log",
+                                   "Dump_log" => "./dump.log",
+                                   "Prompt" => "O.K.")
+      localhost.cmd(params["track"]) { |c| print c }
+      localhost.close
+      localhost = nil
+    rescue
+      session[:current_track] = params["track"]
+#      flash[:alert] = $!.to_s
+      flash[:alert] = "サーバーを起動してください"
+    end
     return redirect_to user_path(params["user"])
 
   end
