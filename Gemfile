@@ -37,7 +37,7 @@ gem 'rerun'
 gem 'rb-fsevent'
 gem 'twitter-stream'
 gem 'lazy_high_charts'
-
+gem 'state_machine'
 
 group :development, :test do
   gem 'sqlite3'

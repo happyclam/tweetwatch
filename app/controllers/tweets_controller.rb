@@ -1,31 +1,59 @@
 # -*- coding:utf-8 -*-
 require "net/telnet"
 class TweetsController < ApplicationController
-  def check
-    user_id = params["user"]
+#   def check
+# p "tweet.check"
+#     user_id = params["user"]
 
-    @status_check = nil
+#     @status_check = nil
+#     begin
+#       localhost = Net::Telnet::new("Host" => "localhost",
+#                                    "Port" => 10000 + current_user.id,
+#                                    "Timeout" => 1,
+#                                    "Telnetmode" => false,
+#                                    "Output_log" => "./output.log",
+#                                    "Dump_log" => "./dump.log",
+#                                    "Prompt" => "ack")
+#       localhost.cmd("syn") { |c| print c }
+#       localhost.close
+#       localhost = nil
+#       @status_check = true
+#     rescue
+#       @status_check = false
+#       session["current_track"] = nil
+#       p $!
+#     end
+#     render
+
+#   end
+
+  def check
+p "tweet.check"
+
+    user_id = current_user.id
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
-                                   "Port" => 10000 + current_user.id,
+                                   "Port" => 10000 + user_id.to_i,
                                    "Timeout" => 1,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
                                    "Dump_log" => "./dump.log",
-                                   "Prompt" => "ack")
-      localhost.cmd("syn") { |c| print c }
+                                   "Prompt" => session["current_track"])
+      localhost.cmd("check") { |c| print c }
       localhost.close
       localhost = nil
       @status_check = true
     rescue
       @status_check = false
-      p $!
+      session["current_track"] = nil
+      return redirect_to user_path(user_id)
     end
     render
 
   end
 
   def start
+p "tweet.start"
     user_id = params["user"]
     track = session["current_track"]
     unless track
@@ -36,15 +64,19 @@ class TweetsController < ApplicationController
     end
     begin
       @status_start = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
+      session["server_prepared"] = true
     rescue
       @status_start = false
+      session["current_track"] = nil
+      session["server_prepared"] = nil
+      return redirect_to user_path(user_id)
     end
     render
-#    return redirect_to (user_id) ? user_path(user_id) : root_path
     
   end
 
   def stop
+p "tweet.stop"
     user_id = params["user"]
 
     begin
@@ -61,40 +93,22 @@ class TweetsController < ApplicationController
       @status_stop = true
     rescue
       @status_stop = false
+      session["current_track"] = nil
+      return redirect_to user_path(user_id)
     end
     render
-#    return redirect_to (user_id) ? user_path(user_id) : root_path
-  end
-
-  def store
-    session[:current_track] = params["track"]
-
-    user_id = current_user.id
-p "user_id="+user_id.to_s
-    begin
-      localhost = Net::Telnet::new("Host" => "localhost",
-                                   "Port" => 10000 + user_id.to_i,
-                                   "Timeout" => 1,
-                                   "Telnetmode" => false,
-                                   "Output_log" => "./output.log",
-                                   "Dump_log" => "./dump.log",
-                                   "Prompt" => "O.K.")
-      localhost.cmd(params["track"]) { |c| print c }
-      localhost.close
-      localhost = nil
-    rescue
-      session[:current_track] = params["track"]
-#      flash[:alert] = $!.to_s
-      flash[:alert] = "サーバーを起動してください"
-    end
-    return redirect_to user_path(params["user"])
 
   end
 
   def track
+    session[:current_track] = params["track"]
+    return redirect_to user_path(params["user"])
+
+  end
+
+  def graph
 #    render :text => "params=#{params.to_s}"
     @id = params["user"]
-    @test = params["track"]
     condition = "%" + params["track"].sub("#", "") + "%" 
     ret = Tweet.where('post_hashtags like ?', condition).group(:user_text).order('count_user_text desc').count('user_text')
 
@@ -102,7 +116,7 @@ p "user_id="+user_id.to_s
     @data = []
     
     ret.each{|key, val|
-      @categories << key[0..40]
+      @categories << key[0..TAG_MAX_LENGTH]
       @data << val
     }
 
