@@ -12,5 +12,9 @@ FactoryGirl.define do
     tag "Lorem ipsum"
     user
   end
+  factory :serv do
+    track "#NHK"
+    user
+  end
 
 end
