@@ -34,9 +34,27 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:tracks) }
   it { should respond_to(:feed) }
+  it { should respond_to(:serv) }
 
   it { should be_valid }
   it { should_not be_admin }
+
+  describe "serv associations" do
+    before { @user.save }
+    let!(:serv) do
+      FactoryGirl.create(:serv, user: @user)
+    end
+    it "should destroy associated serv" do
+      serv = @user.serv
+      serv_id = @user.serv.id
+      @user.destroy
+      expect do
+        Serv.find(serv)
+      end.to raise_error(ActiveRecord::RecordNotFound)
+      expect(Serv.where(id: serv_id)).to be_empty
+      expect(Serv.where(id: serv.id)).to be_empty
+    end
+  end
 
   describe "track associations" do
     before { @user.save }
@@ -53,6 +71,7 @@ describe User do
 
     it "should destroy associated tracks" do
       tracks = @user.tracks.to_a
+#      tracks = @user.tracks
       @user.destroy
       expect(tracks).not_to be_empty
       tracks.each do |track|

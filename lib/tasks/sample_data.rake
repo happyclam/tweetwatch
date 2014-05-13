@@ -2,16 +2,20 @@
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
-    admin = User.create!(name: "Example User",
+    samp  = User.create!(name: "Example User",
                          email: "example@railstutorial.jp",
                          password: "foobar",
                          password_confirmation: "foobar",
                          admin: false)
+    samp.build_serv(track: "#NHK")
+    samp.serv.save
     aiueo = User.create!(name: "aiueo",
                          email: "aiueo@gmail.com",
                          password: "aiueoa",
                          password_confirmation: "aiueoa",
                          admin: true)
+    aiueo.build_serv(track: "#fujitv")
+    aiueo.serv.save
     contents = []
     contents << "宇都宮"    
     contents << "細川"    
@@ -64,10 +68,12 @@ namespace :db do
       name  = Faker::Name.name
       email = "example-#{n+1}@railstutorial.jp"
       password  = "password"
-      User.create!(name: name,
-                   email: email,
-                   password: password,
-                   password_confirmation: password)
+      user = User.create!(name: name,
+                          email: email,
+                          password: password,
+                          password_confirmation: password)
+      user.build_serv(track: "#" + (n * 99).to_s)
+      user.serv.save
     end
     
     users = User.all(limit: 10)
@@ -80,5 +86,7 @@ namespace :db do
                          password: "aiueoa",
                          password_confirmation: "aiueoa",
                          admin: true)
+    aiueo.build_serv(track: "#NHK")
+    aiueo.serv.save
   end
 end

@@ -13,7 +13,7 @@
 #
 
 class User < ActiveRecord::Base
-  has_one :servs, dependent: :destroy
+  has_one :serv, dependent: :destroy
   has_many :tracks, dependent: :destroy
   before_save { self.email = email.downcase }
   before_create :create_remember_token
