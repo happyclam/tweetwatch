@@ -1,47 +1,21 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
-  <% if current_user.serv.status == 0 %>
-    $.ajax({url: '/tweets/check',
-        dataType: "html",
-        success: function(data) {
-          if (data == "false") {
+    $.ajax({url: '/tweets/check', dataType: "script"
+    }).done(function(data, status, xhr) {
+        if (data == "false") {
             $('#server_status').html("status = 待機中");
             $('#server_start').hide();
             $('#server_stop').hide();
             $('#server_store').show();
-          } else {
+        } else {
             $('#server_status').html("status = 集計中");
             $('#server_start').hide();
             $('#server_store').hide();
             $('#server_stop').show();
-          }
-        },
-        error: function(data) {
-          alert('Error Occured(current_track=<%= current_user.serv.track %>)');
         }
+    }).fail(function(xhr, status, error) {
+        alert('Error Occured(' + error + ')');
     });
-  <% else %>
-    $.ajax({url: '/tweets/check',
-        dataType: "html",
-        success: function(data) {
-          if (data == "false") {
-            $('#server_status').html("status = 停止中");
-            $('#server_store').hide();
-            $('#server_stop').hide();
-            $('#server_start').show();
-          } else {
-            $('#server_status').html("status = 待機中");
-            $('#server_start').hide();
-            $('#server_stop').hide();
-            $('#server_store').show();
-
-          }
-        },
-        error: function(data) {
-          alert('Error Occured(current_track=<%= current_user.serv.track %>)');
-        }
-    });
-  <% end %>
 });
 <% end %>
 

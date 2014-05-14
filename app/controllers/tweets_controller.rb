@@ -2,7 +2,7 @@
 require "net/telnet"
 class TweetsController < ApplicationController
 #   def check
-# p "tweet.check"
+# p "tweets.check"
 #     user_id = params["user"]
 
 #     @status_check = nil
@@ -28,8 +28,8 @@ class TweetsController < ApplicationController
 #   end
 
   def check
-p "tweet.check"
-
+p "tweets.check"
+p "current_user="+current_user.inspect
     user_id = current_user.id
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
@@ -44,8 +44,9 @@ p "tweet.check"
       localhost = nil
       @status_check = true
     rescue
+      #検索タグがDB内と食い違っているか、またはサーバースクリプトが起動していない
       @status_check = false
-#      current_user.serv.track = nil
+      current_user.serv.track = nil
       return redirect_to user_path(user_id)
     end
     render
@@ -53,7 +54,7 @@ p "tweet.check"
   end
 
   def start
-p "tweet.start"
+p "tweets.start"
     user_id = params["user"]
     track = current_user.serv.track
     unless track
@@ -74,7 +75,7 @@ p "tweet.start"
   end
 
   def stop
-p "tweet.stop"
+p "tweets.stop"
     user_id = params["user"]
 
     begin
@@ -99,10 +100,10 @@ p "tweet.stop"
   end
 
   def track
-p "tweet.track"
-    user = User.find(params["user"])
-#    current_user.serv.track = params["track"]
-    user.serv.track = params["track"]
+p "tweets.track"
+#    user = User.find(params["user"])
+#    user.serv.track = params["track"]
+    current_user.serv.update_attribute(:track, params["track"])
     return redirect_to user_path(params["user"])
 
   end

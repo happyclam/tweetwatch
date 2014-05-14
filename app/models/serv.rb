@@ -26,7 +26,7 @@ class Serv < ActiveRecord::Base
       transition :prepared => :storing
     end
     event :stop do
-      transition [:down, :prepared] => :down
+      transition [:storing, :prepared] => :down
     end
   end
 end
