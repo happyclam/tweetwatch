@@ -11,7 +11,7 @@
     <%= link_to "delete", track, method: :delete, data: {confirm: "You sure?"}, title: track.tag %>
     <br />
     <% if current_user.admin? %>
-      <%= ((session[:current_track] == track.tag) ? "○" : "　") %>
+      <%= ((current_user.serv.track == track.tag) ? "○" : "　") %>
       <%= link_to("タグをセット", tweets_track_path(:track => track.tag, :user => track.user)) %>
     <% end %>
   <% end %>

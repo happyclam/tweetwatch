@@ -1,6 +1,6 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
-  <% if session[:server_prepared] %>
+  <% if current_user.serv.status == 0 %>
     $.ajax({url: '/tweets/check',
         dataType: "html",
         success: function(data) {
@@ -17,7 +17,7 @@ $(document).ready(function(){
           }
         },
         error: function(data) {
-          alert('Error Occured(current_track=<%= session[:current_track].to_s %>)');
+          alert('Error Occured(current_track=<%= current_user.serv.track %>)');
         }
     });
   <% else %>
@@ -38,7 +38,7 @@ $(document).ready(function(){
           }
         },
         error: function(data) {
-          alert('Error Occured(current_track=<%= session[:current_track].to_s %>)');
+          alert('Error Occured(current_track=<%= current_user.serv.track %>)');
         }
     });
   <% end %>

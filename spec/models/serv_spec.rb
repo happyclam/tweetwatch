@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: servs
+#
+#  id         :integer          not null, primary key
+#  track      :string(255)
+#  user_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 require 'spec_helper'
 
 describe Serv do

@@ -4,18 +4,18 @@
 #
 #  id                     :integer          not null, primary key
 #  user_id                :integer          default(0), not null
-#  user_name              :text             not null
-#  user_screen_name       :text             not null
-#  user_image             :text
+#  user_name              :string(255)      not null
+#  user_screen_name       :string(255)      not null
+#  user_image             :string(255)
 #  user_description       :text
 #  user_text              :text
-#  post_hashtags          :text
+#  post_hashtags          :string(255)
 #  status_id              :integer
 #  reply_status_id        :integer
 #  reply_user_id          :integer
-#  reply_user_screen_name :text
-#  created_at             :date
-#  updated_at             :date
+#  reply_user_screen_name :string(255)
+#  created_at             :datetime
+#  updated_at             :datetime
 #
 
 class Tweet < ActiveRecord::Base

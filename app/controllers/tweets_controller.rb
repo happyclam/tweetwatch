@@ -38,14 +38,14 @@ p "tweet.check"
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
                                    "Dump_log" => "./dump.log",
-                                   "Prompt" => session["current_track"])
+                                   "Prompt" => current_user.serv.track)
       localhost.cmd("check") { |c| print c }
       localhost.close
       localhost = nil
       @status_check = true
     rescue
       @status_check = false
-      session["current_track"] = nil
+#      current_user.serv.track = nil
       return redirect_to user_path(user_id)
     end
     render
@@ -55,7 +55,7 @@ p "tweet.check"
   def start
 p "tweet.start"
     user_id = params["user"]
-    track = session["current_track"]
+    track = current_user.serv.track
     unless track
       #      return redirect_back_or user_path(user_id)
       flash[:alert] = "右側のリストから、タグを指定してください"
@@ -64,11 +64,9 @@ p "tweet.start"
     end
     begin
       @status_start = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
-      session["server_prepared"] = true
     rescue
       @status_start = false
-      session["current_track"] = nil
-      session["server_prepared"] = nil
+#      current_user.serv.track = nil
       return redirect_to user_path(user_id)
     end
     render
@@ -93,7 +91,7 @@ p "tweet.stop"
       @status_stop = true
     rescue
       @status_stop = false
-      session["current_track"] = nil
+#      current_user.serv.track = nil
       return redirect_to user_path(user_id)
     end
     render
@@ -101,7 +99,10 @@ p "tweet.stop"
   end
 
   def track
-    session[:current_track] = params["track"]
+p "tweet.track"
+    user = User.find(params["user"])
+#    current_user.serv.track = params["track"]
+    user.serv.track = params["track"]
     return redirect_to user_path(params["user"])
 
   end
