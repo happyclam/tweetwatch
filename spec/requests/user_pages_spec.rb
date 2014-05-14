@@ -57,6 +57,7 @@ describe "UserPages" do
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:srv) {FactoryGirl.create(:serv, user: user, track: "#Foo")}
     let!(:t1) {FactoryGirl.create(:track, user: user, tag: "Foo")}
     let!(:t2) {FactoryGirl.create(:track, user: user, tag: "Bar")}
     before { visit user_path(user) }

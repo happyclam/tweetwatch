@@ -15,7 +15,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @tracks = @user.tracks.paginate(page: params[:page])
-
   end
 
   # GET /users/new
