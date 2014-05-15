@@ -1,18 +1,10 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
-    $.ajax({url: '/tweets/check', dataType: "script"
+    $.ajax({
+        url: '/tweets/check', 
+        data: {},
+        dataType: "script"
     }).done(function(data, status, xhr) {
-        if (data == "false") {
-            $('#server_status').html("status = 待機中");
-            $('#server_start').hide();
-            $('#server_stop').hide();
-            $('#server_store').show();
-        } else {
-            $('#server_status').html("status = 集計中");
-            $('#server_start').hide();
-            $('#server_store').hide();
-            $('#server_stop').show();
-        }
     }).fail(function(xhr, status, error) {
         alert('Error Occured(' + error + ')');
     });
@@ -34,9 +26,6 @@ $(document).ready(function(){
       <div style="margin: 0px 0px 30px;"><span>※status = [待機中 | 停止中 | 集計中]</span></div>
       <div id="server_start">
         <%= link_to("サーバー起動", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
-      </div>
-      <div id="server_store">
-        <%= link_to("集計開始", tweets_store_path(:user => @user, :format => :js), :remote => true) %>
       </div>
       <div id="server_stop">
         <%= link_to("サーバー停止", tweets_stop_path(:user => @user, :format => :js), :remote => true) %>

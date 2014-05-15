@@ -40,12 +40,11 @@ class Serv < EM::Connection
     #   send_data "ack"
     when /check/i
       send_data @track
-    # when /store/i
-    #   send_data @track
-    #   tracking(@track)
+    when /store/i
+      send_data @track
+      tracking(@track)
     else
       send_data "O.K."
-      tracking(@track)
     end
 
     # EM.stop if data =~ /stop/i
