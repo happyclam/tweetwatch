@@ -4,6 +4,7 @@ class TweetsController < ApplicationController
   def check
 p "tweets.check"
 p "current_user="+current_user.inspect
+p "check:track="+current_user.serv.track.to_s
     user_id = current_user.id
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
@@ -41,6 +42,7 @@ p "tweets.start"
     begin
       ret = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
       current_user.serv.start if ret
+      ret = system("sleep 1")
     rescue
       current_user.serv.down
       render :js => "window.location.href='"+user_path(user_id)+"'"
@@ -55,7 +57,7 @@ p "tweets.start"
 p "tweets.store"
     user_id = current_user.id
 p "user_id="+current_user.id.to_s
-p "track="+current_user.serv.track.to_s
+p "store:track="+current_user.serv.track.to_s
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + user_id.to_i,
