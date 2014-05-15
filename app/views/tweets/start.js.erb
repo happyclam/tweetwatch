@@ -1,3 +1,9 @@
-$('#server_status').html('status = <%= @status_start ? "待機中" : "Error" %>');
-$('#server_start').hide(500)
-$('#server_store').show(500)
+<% if current_user.serv.status == PREPARED -%>
+  $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
+  $('#server_start').hide(500);
+  $('#server_stop').show(500);
+<% else -%>
+  $('#server_status').html("status = 停止中");
+  $('#server_stop').hide(500);
+  $('#server_start').show(500);
+<% end -%>

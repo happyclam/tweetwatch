@@ -1,32 +1,6 @@
 # -*- coding:utf-8 -*-
 require "net/telnet"
 class TweetsController < ApplicationController
-#   def check
-# p "tweets.check"
-#     user_id = params["user"]
-
-#     @status_check = nil
-#     begin
-#       localhost = Net::Telnet::new("Host" => "localhost",
-#                                    "Port" => 10000 + current_user.id,
-#                                    "Timeout" => 1,
-#                                    "Telnetmode" => false,
-#                                    "Output_log" => "./output.log",
-#                                    "Dump_log" => "./dump.log",
-#                                    "Prompt" => "ack")
-#       localhost.cmd("syn") { |c| print c }
-#       localhost.close
-#       localhost = nil
-#       @status_check = true
-#     rescue
-#       @status_check = false
-#       session["current_track"] = nil
-#       p $!
-#     end
-#     render
-
-#   end
-
   def check
 p "tweets.check"
 p "current_user="+current_user.inspect
@@ -43,12 +17,14 @@ p "current_user="+current_user.inspect
       localhost.close
       localhost = nil
       @status_check = true
+#      current_user.serv.store if current_user.serv.status == PREPARED      
     rescue
       #検索タグがDB内と食い違っているか、またはサーバースクリプトが起動していない
       @status_check = false
       current_user.serv.track = nil
-      return redirect_to user_path(user_id)
+#      return redirect_to user_path(user_id)
     end
+p "status_check="+@status_check.to_s
     render
 
   end
@@ -58,20 +34,45 @@ p "tweets.start"
     user_id = params["user"]
     track = current_user.serv.track
     unless track
-      #      return redirect_back_or user_path(user_id)
       flash[:alert] = "右側のリストから、タグを指定してください"
       render :js => "window.location.href='"+user_path(user_id)+"'"
       return
     end
     begin
-      @status_start = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
+      ret = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} &")
+      current_user.serv.start if ret
     rescue
-      @status_start = false
-#      current_user.serv.track = nil
-      return redirect_to user_path(user_id)
+      current_user.serv.down
+      render :js => "window.location.href='"+user_path(user_id)+"'"
+      return
+
     end
     render
-    
+
+  end
+
+  def store
+p "tweets.store"
+    user_id = current_user.id
+    begin
+      localhost = Net::Telnet::new("Host" => "localhost",
+                                   "Port" => 10000 + user_id.to_i,
+                                   "Timeout" => 1,
+                                   "Telnetmode" => false,
+                                   "Output_log" => "./output.log",
+                                   "Dump_log" => "./dump.log",
+                                   "Prompt" => current_user.serv.track)
+      localhost.cmd("store") { |c| print c }
+      localhost.close
+      localhost = nil
+      @status_store = true
+      current_user.serv.store if current_user.serv.status == PREPARED      
+    rescue
+      @status_store = false
+#      current_user.serv.track = nil
+    end
+    return redirect_to user_path(user_id)
+
   end
 
   def stop
@@ -90,10 +91,11 @@ p "tweets.stop"
       localhost.close
       localhost = nil
       @status_stop = true
+      current_user.serv.stop if current_user.serv
     rescue
       @status_stop = false
-#      current_user.serv.track = nil
-      return redirect_to user_path(user_id)
+      flash[:alert] = $!.to_s
+      p $!
     end
     render
 

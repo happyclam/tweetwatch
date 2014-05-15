@@ -4,7 +4,6 @@ Tweetwatch::Application.routes.draw do
   match '/tweets/track', :to => 'tweets#track', via: 'get'
   match '/tweets/graph', :to => 'tweets#graph', via: 'get'
   match '/tweets/check', :to => 'tweets#check', via: 'get'
-  match '/tweets/store', :to => 'tweets#store', via: 'get'
   match '/tweets/start', :to => 'tweets#start', via: 'get'
   match '/tweets/stop',  :to => 'tweets#stop',  via: 'get'
 
