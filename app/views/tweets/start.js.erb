@@ -2,8 +2,15 @@
   $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
   $('#server_start').hide(500);
   $('#server_stop').show(500);
+  $.ajax({
+      url: '/tweets/store', 
+      data: {},
+      dataType: "html"
+  }).done(function(data, status, xhr) {
+  }).fail(function(xhr, status, error) {
+      alert('Error Occured(' + error + ' in start.js)');
+  });
 <% else -%>
-  $('#server_status').html("status = 停止中");
-  $('#server_stop').hide(500);
-  $('#server_start').show(500);
+  $('#server_status').html("status = not prepared");
+  $('#server_stop').show(500);
 <% end -%>
