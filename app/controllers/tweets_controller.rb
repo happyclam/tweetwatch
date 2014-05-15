@@ -54,10 +54,12 @@ p "tweets.start"
   def store
 p "tweets.store"
     user_id = current_user.id
+p "user_id="+current_user.id.to_s
+p "track="+current_user.serv.track.to_s
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + user_id.to_i,
-                                   "Timeout" => 1,
+                                   "Timeout" => 5,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
                                    "Dump_log" => "./dump.log",
@@ -70,13 +72,17 @@ p "tweets.store"
     rescue
       @status_store = false
 #      current_user.serv.track = nil
+      p $!
     end
+p "status_store="+@status_store.to_s
+p "server_status="+current_user.serv.status.to_s
     return redirect_to user_path(user_id)
 
   end
 
   def stop
 p "tweets.stop"
+p "status="+current_user.serv.status.to_s
     user_id = params["user"]
 
     begin
@@ -97,6 +103,7 @@ p "tweets.stop"
       flash[:alert] = $!.to_s
       p $!
     end
+p "status="+current_user.serv.status.to_s
     render
 
   end
@@ -105,7 +112,14 @@ p "tweets.stop"
 p "tweets.track"
 #    user = User.find(params["user"])
 #    user.serv.track = params["track"]
-    current_user.serv.update_attribute(:track, params["track"])
+    case current_user.serv.status
+    when DOWN
+      current_user.serv.update_attribute(:track, params["track"])
+    when PREPARED, STORING
+      flash[:alert] = "サーバーを停止してから選択してください"
+    else
+      flash[:alert] = "Error"
+    end
     return redirect_to user_path(params["user"])
 
   end
