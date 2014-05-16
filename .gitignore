@@ -24,4 +24,5 @@ doc/
 .env
 cmd.txt
 *.log
+*.query
 

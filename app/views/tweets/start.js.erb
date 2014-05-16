@@ -1,12 +1,12 @@
 <% if current_user.serv.status == PREPARED -%>
-  $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
-  $('#server_start').hide(500);
-  $('#server_stop').show(500);
   $.ajax({
       url: '/tweets/store', 
       data: {},
       dataType: "html"
   }).done(function(data, status, xhr) {
+      $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
+      $('#server_start').hide(500);
+      $('#server_stop').show(500);
   }).fail(function(xhr, status, error) {
       alert('Error Occured(' + error + ' in start.js)');
   });

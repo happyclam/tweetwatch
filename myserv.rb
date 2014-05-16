@@ -7,10 +7,6 @@ require 'pp'
 
 require 'twitter/json_stream'
 
-TWITTER_CONSUMER_KEY = 'p6jdrM03fqw2rgN9k8Erg'
-TWITTER_CONSUMER_SECRET = 'xP4SdHABYQg83E7947xy8aBLUPgc820Bt03B9SPZug'
-TWITTER_OAUTH_TOKEN = '72840202-USLn9jVAr3p4VqIWRk3MJlbHALaTmZHlDodSKIs5I'
-TWITTER_OAUTH_TOKEN_SECRET = 'RbTNGwxgfQW5HjEookk4kG1pMZZtq4VcSiPnFlghIkCLx'
 # # TwitterのAPIキー情報を環境変数から取得
 # TWITTER_CONSUMER_KEY        ||= ENV['TWITTER_CONSUMER_KEY']
 # TWITTER_CONSUMER_SECRET     ||= ENV['TWITTER_CONSUMER_SECRET']
@@ -20,10 +16,14 @@ TWITTER_OAUTH_TOKEN_SECRET = 'RbTNGwxgfQW5HjEookk4kG1pMZZtq4VcSiPnFlghIkCLx'
 
 DBNAME = "./db/development.sqlite3"
 
-params = ARGV.getopts('p:t:')
+params = ARGV.getopts('p:t:c:k:s:a:')
 
 class Serv < EM::Connection
   attr_accessor :track
+  attr_accessor :c_key
+  attr_accessor :c_secret
+  attr_accessor :a_key
+  attr_accessor :a_secret
   def post_init
     puts "myserv: init"
   end
@@ -42,22 +42,11 @@ class Serv < EM::Connection
       send_data @track
     when /store/i
       send_data @track
-      tracking(@track)
+      tracking(@track, @c_key, @c_secret, @a_key, @a_secret)
     else
       send_data "O.K."
     end
 
-    # EM.stop if data =~ /stop/i
-    # if data =~ /syn/i
-    #   send_data "ack"
-    # else
-    #   if data =~ /check/i
-    #     send_data @track
-    #   else
-    #     send_data "O.K."
-    #     tracking(@track)
-    #   end
-    # end
   end
 
   def connection_completed
@@ -68,14 +57,14 @@ class Serv < EM::Connection
     puts "myserv: unbind"
   end
 
-  def tracking(track)
+  def tracking(track, c_key, c_secret, a_key, a_secret)
     stream = Twitter::JSONStream.connect(
                                          :path    => "/1.1/statuses/filter.json?track=" + URI.encode(track),
                                          :oauth => {
-                                           :consumer_key    => TWITTER_CONSUMER_KEY,
-                                           :consumer_secret => TWITTER_CONSUMER_SECRET,
-                                           :access_key      => TWITTER_OAUTH_TOKEN,
-                                           :access_secret   => TWITTER_OAUTH_TOKEN_SECRET
+                                           :consumer_key    => c_key,
+                                           :consumer_secret => c_secret,
+                                           :access_key      => a_key,
+                                           :access_secret   => a_secret
                                          },
                                          :ssl => true
                                          )
@@ -134,6 +123,10 @@ EM.run do
   $stdout.print "first" + "\n"
   EM.start_server("127.0.0.1", params["p"].to_i, Serv) do |conn|
     conn.track = params["t"]
+    conn.c_key = params["c"]
+    conn.c_secret = params["k"]
+    conn.a_key = params["s"]
+    conn.a_secret = params["a"]
     $stdout.print conn.track + "\n"
   end
   $stdout.print "end" + "\n"
