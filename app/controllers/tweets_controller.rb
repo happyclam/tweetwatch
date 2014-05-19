@@ -39,10 +39,16 @@ p "tweets.start"
     s = current_user.a_key
     a = current_user.a_secret
     unless track
-      flash[:alert] = "右側のリストから、タグを指定してください"
+      flash[:alert] = "右側のリストから、タグを指定してください。"
       render :js => "window.location.href='"+user_path(user_id)+"'"
       return
     end
+    unless (c && k && s && a)
+      flash[:alert] = "TwitterAPIを利用するための設定が完了していません。settingメニューから設定してください。"
+      render :js => "window.location.href='"+user_path(user_id)+"'"
+      return
+    end      
+
     begin
 p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &"
       ret = system("ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &")
