@@ -7,6 +7,7 @@
 #  user_id    :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  status     :integer          default(0)
 #
 
 require 'spec_helper'

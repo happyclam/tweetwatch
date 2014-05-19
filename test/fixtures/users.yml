@@ -10,6 +10,10 @@
 #  password_digest :string(255)
 #  remember_token  :string(255)
 #  admin           :boolean          default(FALSE)
+#  c_key           :string(255)
+#  c_secret        :string(255)
+#  a_key           :string(255)
+#  a_secret        :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

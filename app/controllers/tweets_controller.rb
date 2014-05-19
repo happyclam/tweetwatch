@@ -48,7 +48,7 @@ p "ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{
       ret = system("ruby myserv.rb -p#{10000 + user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &")
 
       current_user.serv.start if ret
-      ret = system("sleep 5")
+      ret = system("sleep 3")
     rescue
       current_user.serv.down
       render :js => "window.location.href='"+user_path(user_id)+"'"

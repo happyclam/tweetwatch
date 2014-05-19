@@ -8,3 +8,15 @@
       <%= f.password_field :password %>
       <%= f.label :password_confirmation, "Confirm Password" %>
       <%= f.password_field :password_confirmation %>
+      <% if f.object.admin && f.object.admin == true %>
+        <%= f.label :admin %>
+        <%= f.check_box :admin %>
+      <% end %>
+      <%= f.label :c_key %>
+      <%= f.text_field :c_key %>
+      <%= f.label :c_secret %>
+      <%= f.text_field :c_secret %>
+      <%= f.label :a_key %>
+      <%= f.text_field :a_key %>
+      <%= f.label :a_secret %>
+      <%= f.text_field :a_secret %>
