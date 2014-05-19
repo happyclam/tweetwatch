@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140516025111) do
+ActiveRecord::Schema.define(version: 20140519064357) do
 
   create_table "servs", force: true do |t|
     t.string   "track"
@@ -44,7 +44,10 @@ ActiveRecord::Schema.define(version: 20140516025111) do
     t.string   "reply_user_screen_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "own_user_id"
   end
+
+  add_index "tweets", ["own_user_id"], name: "index_tweets_on_own_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name"
@@ -58,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140516025111) do
     t.string   "c_secret"
     t.string   "a_key"
     t.string   "a_secret"
+    t.integer  "tweets_count",    default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

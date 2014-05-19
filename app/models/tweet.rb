@@ -19,4 +19,6 @@
 #
 
 class Tweet < ActiveRecord::Base
+  belongs_to :own_user, :counter_cache => true, :class_name => "User"
+
 end

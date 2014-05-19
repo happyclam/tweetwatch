@@ -51,6 +51,7 @@ namespace :db do
           track = tracks[rand(10)].clone
         end
         tweet = Tweet.create(user_id: idx + 1,
+                         own_user_id: rand(3) + 1,
                          user_name: "ユーザ" + (idx + 1).to_s,
                          user_screen_name: "user" + (idx + 1).to_s,
                          user_description: Faker::Lorem.sentence(5),
@@ -68,10 +69,18 @@ namespace :db do
       name  = Faker::Name.name
       email = "example-#{n+1}@railstutorial.jp"
       password  = "password"
+      c_key  = Faker::Lorem.characters(21)
+      c_secret  = Faker::Lorem.characters(42)
+      a_key  = Faker::Lorem.characters(50)
+      a_secret  = Faker::Lorem.characters(45)
       user = User.create!(name: name,
                           email: email,
                           password: password,
-                          password_confirmation: password)
+                          password_confirmation: password,
+                          c_key: c_key,
+                          c_secret: c_secret,
+                          a_key: a_key,
+                          a_secret: a_secret)
       user.build_serv(track: "#" + (n * 99).to_s)
       user.serv.save
     end

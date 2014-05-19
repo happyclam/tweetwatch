@@ -1,3 +1,4 @@
+<% if current_user && current_user.admin? %>
 <%= javascript_tag do %>
 $(document).ready(function(){
     $.ajax({
@@ -9,6 +10,7 @@ $(document).ready(function(){
         alert('Error Occured(' + error + ')');
     });
 });
+<% end %>
 <% end %>
 
 <% provide(:title, @user.name) %>

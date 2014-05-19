@@ -19,6 +19,7 @@
 class User < ActiveRecord::Base
   has_one :serv, dependent: :destroy
   has_many :tracks, dependent: :destroy
+  has_many :tweets, :class_name => "Tweet", :foreign_key => "own_user_id"
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 

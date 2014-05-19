@@ -12,6 +12,7 @@ DBNAME = "./db/development.sqlite3"
 params = ARGV.getopts('p:t:c:k:s:a:')
 
 class Serv < EM::Connection
+  attr_accessor :uid
   attr_accessor :track
   attr_accessor :c_key
   attr_accessor :c_secret
@@ -35,7 +36,7 @@ class Serv < EM::Connection
       send_data @track
     when /store/i
       send_data @track
-      tracking(@track, @c_key, @c_secret, @a_key, @a_secret)
+      tracking(@track, @c_key, @c_secret, @a_key, @a_secret, @uid)
     else
       send_data "O.K."
     end
@@ -50,7 +51,7 @@ class Serv < EM::Connection
     puts "myserv: unbind"
   end
 
-  def tracking(track, c_key, c_secret, a_key, a_secret)
+  def tracking(track, c_key, c_secret, a_key, a_secret, uid)
     stream = Twitter::JSONStream.connect(
                                          :path    => "/1.1/statuses/filter.json?track=" + URI.encode(track),
                                          :oauth => {
@@ -80,7 +81,7 @@ class Serv < EM::Connection
       reply_user_screen_name  = tw_json['in_reply_to_screen_name'] rescue nil
 
       # tweetsテーブルに書き込み
-      sql = "INSERT INTO tweets (user_id, user_name, user_screen_name, user_text, post_hashtags, user_image, user_description, status_id, reply_status_id, reply_user_id, reply_user_screen_name, updated_at, created_at) VALUES ('#{user_id}', '#{user_name}', '#{user_screen_name}', '#{user_text}', '#{post_hashtags}', '#{user_image}', '#{user_description}', '#{status_id}', '#{reply_status_id}', '#{reply_user_id}', '#{reply_user_screen_name}', '#{Time.now}', '#{Time.now}')"
+      sql = "INSERT INTO tweets (own_user_id, user_id, user_name, user_screen_name, user_text, post_hashtags, user_image, user_description, status_id, reply_status_id, reply_user_id, reply_user_screen_name, updated_at, created_at) VALUES (#{uid}, '#{user_id}', '#{user_name}', '#{user_screen_name}', '#{user_text}', '#{post_hashtags}', '#{user_image}', '#{user_description}', '#{status_id}', '#{reply_status_id}', '#{reply_user_id}', '#{reply_user_screen_name}', '#{Time.now}', '#{Time.now}')"
 
       $stdout.print "sql= #{sql}\n"
       $stdout.flush
@@ -114,8 +115,9 @@ end
 #------------------------------------------------------------
 EM.run do
   $stdout.print "first" + "\n"
-  EM.start_server("127.0.0.1", params["p"].to_i, Serv) do |conn|
+  EM.start_server("127.0.0.1", 10000 + params["p"].to_i, Serv) do |conn|
     conn.track = params["t"]
+    conn.uid = params["p"].to_i
     conn.c_key = params["c"]
     conn.c_secret = params["k"]
     conn.a_key = params["s"]
