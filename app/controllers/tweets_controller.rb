@@ -18,8 +18,11 @@ p "check:track="+current_user.serv.track.to_s
       localhost.close
       localhost = nil
       @status_check = true
-#      current_user.serv.store if current_user.serv.status == PREPARED      
+    rescue Net::ReadTimeout
+p "check.readtimeout"
     rescue
+p "check.exception"
+      p $!
       #検索タグがDB内と食い違っているか、またはサーバースクリプトが起動していない
       @status_check = false
       current_user.serv.track = nil
@@ -56,6 +59,8 @@ p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &"
       current_user.serv.start if ret
       ret = system("sleep 5")
     rescue
+p "start.exception"
+      p $!
       current_user.serv.down
       render :js => "window.location.href='"+user_path(user_id)+"'"
       return
@@ -82,11 +87,15 @@ p "store:track="+current_user.serv.track
       localhost = nil
       @status_store = true
       current_user.serv.store if current_user.serv.status == PREPARED      
+    rescue Net::ReadTimeout
+p "store.readtimeout"
     rescue
+p "store.exception"
       @status_store = false
+#      current_user.serv.stop
+      p $!
       current_user.serv.stop
       flash[:alert] = $!.to_s
-      p $!
       return redirect_to user_path(current_user), notice: $!.to_s
     end
 p "status_store="+@status_store.to_s

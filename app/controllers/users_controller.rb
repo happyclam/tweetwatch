@@ -56,6 +56,7 @@ class UsersController < ApplicationController
     else
       render 'edit'
     end
+
     # respond_to do |format|
     #   if @user.update(user_params)
     #     flash[:success] = "Profile updated"
@@ -89,7 +90,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :c_key, :c_secret, :a_key, :a_secret)
     end
 
     def correct_user

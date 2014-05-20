@@ -30,10 +30,9 @@ class Serv < EM::Connection
     when /stop/i
       send_data "O.K."
       EM.stop
-    # when /syn/i
-    #   send_data "ack"
     when /check/i
       send_data @track
+      puts "sended="+@track
     when /store/i
       send_data @track
       tracking(@track, @c_key, @c_secret, @a_key, @a_secret, @uid)
