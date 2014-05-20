@@ -14,12 +14,13 @@
 #  c_secret        :string(255)
 #  a_key           :string(255)
 #  a_secret        :string(255)
+#  tweets_count    :integer          default(0)
 #
 
 class User < ActiveRecord::Base
   has_one :serv, dependent: :destroy
   has_many :tracks, dependent: :destroy
-  has_many :tweets, :class_name => "Tweet", :foreign_key => "own_user_id"
+  has_many :tweets, :class_name => "Tweet", :foreign_key => "own_user_id", :dependent => :destroy
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 

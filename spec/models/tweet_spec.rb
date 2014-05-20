@@ -16,6 +16,7 @@
 #  reply_user_screen_name :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  own_user_id            :integer
 #
 
 require 'spec_helper'

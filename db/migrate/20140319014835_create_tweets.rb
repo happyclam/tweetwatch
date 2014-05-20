@@ -1,6 +1,7 @@
 class CreateTweets < ActiveRecord::Migration
   def change
     create_table :tweets do |t|
+      t.integer :own_user_id, null: false, default: 0
       t.integer :user_id, null: false, default: 0
       t.string :user_name, null: false
       t.string :user_screen_name, null: false
@@ -15,5 +16,6 @@ class CreateTweets < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :tweets, [:own_user_id, :created_at]
   end
 end

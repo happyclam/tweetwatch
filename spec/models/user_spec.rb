@@ -14,6 +14,7 @@
 #  c_secret        :string(255)
 #  a_key           :string(255)
 #  a_secret        :string(255)
+#  tweets_count    :integer          default(0)
 #
 
 require 'spec_helper'

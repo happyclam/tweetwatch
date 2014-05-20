@@ -16,9 +16,11 @@
 #  reply_user_screen_name :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  own_user_id            :integer
 #
 
 class Tweet < ActiveRecord::Base
+#  belongs_to :own_user, :counter_cache => true, :class_name => "User"
   belongs_to :own_user, :counter_cache => true, :class_name => "User"
 
 end
