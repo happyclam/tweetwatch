@@ -1,9 +1,5 @@
 <li>
-  <% if current_user?(track.user) %>
-    <span class="track"><%= link_to(track.tag, tweets_graph_path(:user => track.user, :track => track.tag)) %></span>
-  <% else %>
-    <span class="track"><%= track.tag %></span>
-  <% end %>
+  <span class="track"><%= link_to(track.tag, tweets_graph_path(:user => track.user, :track => track.tag)) %></span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(track.created_at) %> ago.
   </span>

@@ -25,6 +25,7 @@ $(document).ready(function(){
     <% if current_user && current_user.admin? %>
       <div id="server_status">
       </div>
+      <!-- <div style="margin: 0px 0px 30px;"><span>※status = [待機中 | 停止中 | 集計中]</span></div> -->
       <div id="server_start">
         <%= link_to("サーバー起動", tweets_start_path(:user => @user, :format => :js), :remote => true) %>
       </div>

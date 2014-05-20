@@ -150,9 +150,11 @@ p "tweets.track"
 
   def graph
 #    render :text => "params=#{params.to_s}"
-    @id = params["user"]
-    condition = "%" + params["track"].sub("#", "") + "%" 
-    ret = Tweet.where('post_hashtags like ?', condition).group(:user_text).order('count_user_text desc').count('user_text')
+#p params
+    @track = params["track"]
+    @user = User.find(params["user"])
+    condition = "%" + @track.sub("#", "") + "%" 
+    ret = @user.tweets.where('post_hashtags like ?', condition).group(:user_text).order('count_user_text desc').count('user_text')
 
     @categories = []
     @data = []
@@ -162,7 +164,7 @@ p "tweets.track"
       @data << val
     }
 
-    @track = LazyHighCharts::HighChart.new("graph") do |f|
+    @graph = LazyHighCharts::HighChart.new("graph") do |f|
       f.chart(:type => "bar")
       f.title(:text => params["track"])
       f.xAxis(:categories => @categories)
