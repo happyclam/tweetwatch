@@ -20,7 +20,7 @@
 #
 
 class Tweet < ActiveRecord::Base
-#  belongs_to :own_user, :counter_cache => true, :class_name => "User"
-  belongs_to :own_user, :counter_cache => true, :class_name => "User"
+  belongs_to :user, :counter_cache => true, :class_name => "User", :foreign_key => "own_user_id"
+  validates :own_user_id, presence: true
 
 end
