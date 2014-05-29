@@ -44,7 +44,7 @@ namespace :db do
         if n == 0
           tag = tags[n].clone
           content = contents[rand(2)].clone
-          track = tracks[rand(2)].clone
+          track = tracks[n].clone
         else
           tag = tags[n].clone
           content = contents[rand(10)].clone
