@@ -20,6 +20,8 @@ p "check:track="+current_user.serv.track.to_s
       @status_check = true
     rescue Net::ReadTimeout
 p "check.readtimeout"
+      localhost = nil
+      @status_check = true
     rescue
 p "check.exception"
       p $!
@@ -89,6 +91,7 @@ p "store:track="+current_user.serv.track
       current_user.serv.store if current_user.serv.status == PREPARED      
     rescue Net::ReadTimeout
 p "store.readtimeout"
+      localhost = nil
     rescue
 p "store.exception"
       @status_store = false
