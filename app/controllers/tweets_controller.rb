@@ -3,9 +3,13 @@ require "net/telnet"
 class TweetsController < ApplicationController
   def check
 p "tweets.check"
-p "current_user="+current_user.inspect
-p "check:track="+current_user.serv.track.to_s
-    user_id = current_user.id
+    if current_user
+      user_id = current_user.id
+    else
+      @status_check = false
+      render
+      return
+    end
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + user_id.to_i,
