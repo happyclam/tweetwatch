@@ -10,5 +10,9 @@ $(document).on 'ready page:load', ->
     data: {}
     method: 'get'
   promise = dfd.promise()
-  promise.fail(err) ->
-    alert(err)
+  promise.done((data, status, xhr) ->
+  )
+  promise.fail((xhr, status, error) ->
+    alert(error)
+  )
+  
