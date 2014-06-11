@@ -123,6 +123,7 @@ p "status="+current_user.serv.status.to_s
       localhost.cmd("stop") { |c| print c }
       localhost.close
       localhost = nil
+      flash[:alert] = nil
       @status_stop = true
     rescue
       @status_stop = false
@@ -131,7 +132,9 @@ p "status="+current_user.serv.status.to_s
     end
     current_user.serv.stop if current_user.serv
 p "status="+current_user.serv.status.to_s
-    render
+    render :js => "window.location.href='"+user_path(user_id)+"'"
+    return
+#    render
 
   end
 
