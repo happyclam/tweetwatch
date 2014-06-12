@@ -39,4 +39,14 @@ describe Track do
     before { @track.tag = "a" * 140 }
     it { should_not be_valid }
   end
+
+  describe "when tag is already taken" do
+    before do
+      track_with_same_tag = @track.dup
+      track_with_same_tag.tag = @track.tag.upcase
+      track_with_same_tag.save
+    end
+
+    it { should_not be_valid }
+  end
 end

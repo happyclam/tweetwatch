@@ -64,10 +64,10 @@ describe User do
   describe "track associations" do
     before { @user.save }
     let!(:older_track) do
-      FactoryGirl.create(:track, user: @user, created_at: 1.day.ago)
+      FactoryGirl.create(:track, user: @user, tag: "old", created_at: 1.day.ago)
     end
     let!(:newer_track) do
-      FactoryGirl.create(:track, user: @user, created_at: 1.hour.ago)
+      FactoryGirl.create(:track, user: @user, tag: "new", created_at: 1.hour.ago)
     end
 
     it "should have the right tracks in the right order" do

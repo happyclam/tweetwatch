@@ -1,3 +1,33 @@
+# == Route Map (Updated 2014-06-12 14:45)
+#
+#       Prefix Verb   URI Pattern               Controller#Action
+#         root GET    /                         static_pages#home
+# tweets_track GET    /tweets/track(.:format)   tweets#track
+# tweets_graph GET    /tweets/graph(.:format)   tweets#graph
+# tweets_check GET    /tweets/check(.:format)   tweets#check
+# tweets_start GET    /tweets/start(.:format)   tweets#start
+# tweets_store GET    /tweets/store(.:format)   tweets#store
+#  tweets_stop GET    /tweets/stop(.:format)    tweets#stop
+#       signup GET    /signup(.:format)         users#new
+#         help GET    /help(.:format)           static_pages#help
+#      contact GET    /contact(.:format)        static_pages#contact
+#       signin GET    /signin(.:format)         sessions#new
+#      signout DELETE /signout(.:format)        sessions#destroy
+#     sessions POST   /sessions(.:format)       sessions#create
+#  new_session GET    /sessions/new(.:format)   sessions#new
+#      session DELETE /sessions/:id(.:format)   sessions#destroy
+#       tracks POST   /tracks(.:format)         tracks#create
+#        track DELETE /tracks/:id(.:format)     tracks#destroy
+#        users GET    /users(.:format)          users#index
+#              POST   /users(.:format)          users#create
+#     new_user GET    /users/new(.:format)      users#new
+#    edit_user GET    /users/:id/edit(.:format) users#edit
+#         user GET    /users/:id(.:format)      users#show
+#              PATCH  /users/:id(.:format)      users#update
+#              PUT    /users/:id(.:format)      users#update
+#              DELETE /users/:id(.:format)      users#destroy
+#
+
 Tweetwatch::Application.routes.draw do
   root 'static_pages#home'
 

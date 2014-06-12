@@ -3,6 +3,7 @@
       url: '/tweets/store', 
       data: {},
       dataType: "html"
+      async: false
   }).done(function(data, status, xhr) {
       $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
       $('#server_start').hide(500);
