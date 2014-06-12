@@ -52,7 +52,7 @@ p "tweets.start"
       render :js => "window.location.href='"+user_path(user_id)+"'"
       return
     end
-    unless (c && k && s && a)
+    unless (c.present? && k.present? && s.present? && a.present?)
       flash[:alert] = "TwitterAPIを利用するための設定が完了していません。settingメニューから設定してください。"
       render :js => "window.location.href='"+user_path(user_id)+"'"
       return

@@ -3,9 +3,9 @@
       url: '/tweets/store', 
       data: {},
       dataType: "html"
-      async: false
   }).done(function(data, status, xhr) {
       $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
+      $("[class^='alert alert-alert']").empty();
       $('#server_start').hide(500);
       $('#server_stop').show(500);
   }).fail(function(xhr, status, error) {
