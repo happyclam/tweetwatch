@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).on 'ready page:load', ->
+ready = ->
   url = '/tweets/check'
   dfd = $.ajax
     url: url
@@ -15,3 +15,6 @@ $(document).on 'ready page:load', ->
   promise.fail((xhr, status, error) ->
     alert(error)
   )
+
+$(document).ready(ready)
+$(document).on('page:load', ready)
