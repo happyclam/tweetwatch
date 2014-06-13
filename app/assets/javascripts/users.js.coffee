@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$(document).on 'ready page:load', ->
+checkaction = ->
   url = '/tweets/check'
   dfd = $.ajax
     url: url
@@ -16,3 +16,4 @@ $(document).on 'ready page:load', ->
     alert(error)
   )
   
+$(window).bind('page:change', checkaction)
