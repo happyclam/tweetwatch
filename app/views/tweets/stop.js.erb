@@ -1,5 +1,5 @@
 <% if @status_stop -%>
-  $('#server_status').html("status = 停止中");
+  $('#server_status').html("検索タグ:<%= current_user.serv.track if (current_user && current_user.admin) %> - status:停止中");
   $('#server_stop').hide(500);
   $('#server_start').show(500);
 <% else -%>

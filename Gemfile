@@ -41,8 +41,10 @@ gem 'twitter-stream'
 gem 'lazy_high_charts'
 gem 'state_machine'
 
+
+
+gem 'sqlite3'
 group :development, :test do
-  gem 'sqlite3'
   gem 'rspec-rails'
   gem 'rails-erd'
   gem 'taps'
@@ -56,6 +58,8 @@ group :test do
 end
 
 group :production do
-  gem 'pg'
+#  gem 'pg'
   gem 'rails_12factor'
+#   gem 'therubyracer'
+#   gem 'execjs'
 end

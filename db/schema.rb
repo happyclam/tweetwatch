@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20140612053137) do
     t.datetime "updated_at"
   end
 
-  add_index "tracks", ["user_id", "tag"], name: "index_tracks_on_user_id_and_tag", unique: true
+  add_index "tracks", ["tag", "user_id"], name: "index_tracks_on_tag_and_user_id", unique: true
 
   create_table "tweets", force: true do |t|
     t.integer  "user_id",                default: 0, null: false

@@ -31,7 +31,7 @@ p "check.exception"
       p $!
       #検索タグがDB内と食い違っているか、またはサーバースクリプトが起動していない
       @status_check = false
-      current_user.serv.track = nil
+#      current_user.serv.track = nil
 #      return redirect_to user_path(user_id)
     end
 p "status_check="+@status_check.to_s

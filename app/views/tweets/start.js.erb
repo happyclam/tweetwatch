@@ -4,7 +4,7 @@
       data: {},
       dataType: "html"
   }).done(function(data, status, xhr) {
-      $('#server_status').html("status = 検索タグ:<%= current_user.serv.track %>で集計中");
+      $('#server_status').html("検索タグ:<%= current_user.serv.track %> - status:集計中");
       $("[class^='alert alert-alert']").empty();
       $('#server_start').hide(500);
       $('#server_stop').show(500);
