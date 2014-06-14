@@ -43,6 +43,8 @@ p "status_check="+@status_check.to_s
 p "tweets.start"
     user_id = params["user"]
     track = current_user.serv.track
+    d = (ENV["RAILS_ENV"] == "production") ? "./db/production.sqlite3" : "./db/development.sqlite3"
+p "d="+d
     c = current_user.c_key
     k = current_user.c_secret
     s = current_user.a_key
@@ -59,8 +61,8 @@ p "tweets.start"
     end      
 
     begin
-p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &"
-      ret = system("ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} &")
+p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &"
+      ret = system("ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &")
 
       current_user.serv.start if ret
       ret = system("sleep 5")

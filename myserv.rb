@@ -7,12 +7,11 @@ require 'pp'
 
 require 'twitter/json_stream'
 
-DBNAME = "./db/development.sqlite3"
-
-params = ARGV.getopts('p:t:c:k:s:a:')
+params = ARGV.getopts('p:t:c:k:s:a:d:')
 
 class Serv < EM::Connection
   attr_accessor :uid
+  attr_accessor :dbname
   attr_accessor :track
   attr_accessor :c_key
   attr_accessor :c_secret
@@ -35,7 +34,7 @@ class Serv < EM::Connection
       puts "sended="+@track
     when /store/i
       send_data @track
-      tracking(@track, @c_key, @c_secret, @a_key, @a_secret, @uid)
+      tracking(@track, @c_key, @c_secret, @a_key, @a_secret, @uid, @dbname)
     else
       send_data "O.K."
     end
@@ -50,7 +49,7 @@ class Serv < EM::Connection
     puts "myserv: unbind"
   end
 
-  def tracking(track, c_key, c_secret, a_key, a_secret, uid)
+  def tracking(track, c_key, c_secret, a_key, a_secret, uid, dbname)
     stream = Twitter::JSONStream.connect(
                                          :path    => "/1.1/statuses/filter.json?track=" + URI.encode(track),
                                          :oauth => {
@@ -62,7 +61,7 @@ class Serv < EM::Connection
                                          :ssl => true
                                          )
     stream.each_item do |item|
-      db = SQLite3::Database.new( DBNAME )
+      db = SQLite3::Database.new( dbname )
 
       tw_json = JSON.parse(item)
 #      tw_json = JSON.parse(item, {:symbolize_names => true})
@@ -117,6 +116,7 @@ EM.run do
   EM.start_server("127.0.0.1", 10000 + params["p"].to_i, Serv) do |conn|
     conn.track = params["t"]
     conn.uid = params["p"].to_i
+    conn.dbname = params["d"].to_s
     conn.c_key = params["c"]
     conn.c_secret = params["k"]
     conn.a_key = params["s"]
