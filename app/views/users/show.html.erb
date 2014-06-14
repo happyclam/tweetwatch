@@ -1,3 +1,17 @@
+<% if current_user && current_user.admin? %>
+<%= javascript_tag do %>
+$(document).ready(function(){
+    $.ajax({
+        url: '/tweets/check', 
+        data: {},
+        dataType: "script"
+    }).done(function(data, status, xhr) {
+    }).fail(function(xhr, status, error) {
+        alert('Error Occured(' + error + ')');
+    });
+});
+<% end %>
+<% end %>
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="col col-md-4">
