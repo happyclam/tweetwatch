@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 require "net/telnet"
 class TweetsController < ApplicationController
+  before_action :correct_user, only: [:track, :start]
+
   def check
 p "tweets.check"
     if current_user
@@ -145,7 +147,6 @@ p "status="+current_user.serv.status.to_s
   end
 
   def track
-p "tweets.track"
 #    user = User.find(params["user"])
 #    user.serv.track = params["track"]
     case current_user.serv.status
@@ -186,5 +187,10 @@ p "tweets.track"
 
 #    render :text => "ret=#{ret.to_s}"
   end
+
+  private
+    def correct_user
+      redirect_to root_url if current_user.serv.nil?
+    end
 
 end
