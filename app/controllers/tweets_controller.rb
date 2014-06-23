@@ -39,6 +39,22 @@ p "check.exception"
 p "status_check="+@status_check.to_s
     render
 
+    # if @status_check
+    #   @status_str = "検索タグ:" + current_user.serv.track + " - status:集計中"
+    # else
+    #   @status_str = "検索タグ:" + current_user.serv.track + " - status:停止中"
+    # end
+# jq_str = <<"JQ_STR"
+#   $('#server_status').html("#{@status_str}");
+#   $('#server_start').hide(500);
+#   $('#server_stop').show(500);
+# JQ_STR
+
+#    render :text => "alert('hello')"
+#    render :file => "tweets/check.js.erb"
+#    render :inline => jq_str
+#    render :text => jq_str
+
   end
 
   def start
