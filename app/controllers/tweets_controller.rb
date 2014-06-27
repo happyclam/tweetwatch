@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 require "net/telnet"
 class TweetsController < ApplicationController
+  before_action :signed_in_user, except: [:graph, :check]
   before_action :correct_user, only: [:track, :start]
 
   def check
@@ -133,7 +134,7 @@ p "server_status="+current_user.serv.status.to_s
 
   def stop
 p "tweets.stop"
-p "status="+current_user.serv.status.to_s
+#p "status="+current_user.serv.status.to_s
     user_id = params["user"]
 
     begin
@@ -155,7 +156,7 @@ p "status="+current_user.serv.status.to_s
       p $!
     end
     current_user.serv.stop if current_user.serv
-p "status="+current_user.serv.status.to_s
+#p "status="+current_user.serv.status.to_s
     render :js => "window.location.href='"+user_path(user_id)+"'"
     return
 #    render
