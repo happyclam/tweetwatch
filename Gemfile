@@ -10,7 +10,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'jbuilder', '~> 1.2'
-gem 'js-routes'
+#gem 'js-routes'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby

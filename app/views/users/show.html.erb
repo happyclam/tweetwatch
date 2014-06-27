@@ -1,7 +1,7 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
     $.ajax({
-        url: '<%= tweets_check_path %>', 
+        url: '/tweets/check', 
         data: {},
         dataType: "script"
     }).done(function(data, status, xhr) {
