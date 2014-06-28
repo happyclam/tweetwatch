@@ -14,6 +14,7 @@ FactoryGirl.define do
   end
   factory :serv do
     track "#NHK"
+    status 0
     user
   end
 

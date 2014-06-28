@@ -153,7 +153,7 @@ p "tweets.stop"
 #    render :js => "window.location.href='"+user_path(current_user)+"'"
 #    respond_with current_user, :location => user_path(current_user)
     respond_to do |format|
-      format.html {redirect_to current_user}
+      format.html
       format.js {redirect_to current_user}
     end
 #    return
