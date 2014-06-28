@@ -6,7 +6,7 @@ describe TweetsController do
     before { sign_in user, no_capybara: true }
   end
   shared_examples "login as admin" do
-    let(:admin) { FactoryGirl.create(:user) }
+    let(:admin) { FactoryGirl.create(:admin) }
     before { sign_in admin, no_capybara: true }
   end
   describe "ログインしてようがしてなかろうがcheckは通る" do
@@ -21,20 +21,20 @@ describe TweetsController do
       expect(response).to redirect_to(signin_path)
     }
   end
-  # describe "ログイン後stop" do
-  #   include_examples "login as user"
-  #   it {
-  #     get 'stop', format: :js, user: user.id
-  #     expect(response).to redirect_to(user_path(user))
-  #   }
-  # end
-  # describe "adminでログイン後stop" do
-  #   include_examples "login as admin"
-  #   it {
-  #     get 'stop'
-  #     expect(response).to redirect_to(user_path(admin))
-  #   }
-  # end
+  describe "ログイン後stop" do
+    include_examples "login as user"
+    it {
+      get 'stop', format: :js, user: user.id
+      expect(response).to redirect_to(root_url)
+    }
+  end
+  describe "adminでログイン後stop" do
+    include_examples "login as admin"
+    it {
+      get 'stop', format: :js, user: admin.id
+      expect(response).to redirect_to(user_path(admin))
+    }
+  end
 
   # describe "for non-signed-in users" do
   #   let(:user) {FactoryGirl.create(:user)}

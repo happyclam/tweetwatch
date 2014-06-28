@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140612053137) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "status"
+    t.integer  "status",     default: 0
   end
 
   add_index "servs", ["user_id"], name: "index_servs_on_user_id"
@@ -31,10 +31,8 @@ ActiveRecord::Schema.define(version: 20140612053137) do
   end
 
   add_index "tracks", ["tag", "user_id"], name: "index_tracks_on_tag_and_user_id", unique: true
-  add_index "tracks", ["user_id", "created_at"], name: "index_tracks_on_user_id_and_created_at"
 
   create_table "tweets", force: true do |t|
-    t.integer  "own_user_id",            default: 0, null: false
     t.integer  "user_id",                default: 0, null: false
     t.string   "user_name",                          null: false
     t.string   "user_screen_name",                   null: false
@@ -48,9 +46,10 @@ ActiveRecord::Schema.define(version: 20140612053137) do
     t.string   "reply_user_screen_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "own_user_id"
   end
 
-  add_index "tweets", ["own_user_id", "created_at"], name: "index_tweets_on_own_user_id_and_created_at"
+  add_index "tweets", ["own_user_id"], name: "index_tweets_on_own_user_id"
 
   create_table "users", force: true do |t|
     t.string   "name"

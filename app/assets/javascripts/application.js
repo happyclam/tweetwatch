@@ -12,9 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap
-//= require turbolinks
 //= require jquery.turbolinks
+//= require turbolinks
+//= require bootstrap
 //= require highcharts/highcharts
 //= require highcharts/highcharts-more
 //= require highcharts/highstock

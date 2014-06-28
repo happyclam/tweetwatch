@@ -2,20 +2,18 @@
 require "net/telnet"
 class TweetsController < ApplicationController
   before_action :signed_in_user, except: [:graph, :check]
-  before_action :correct_user, only: [:track, :start]
+  before_action :correct_user, only: [:track, :start, :stop, :store]
 
   def check
 p "tweets.check"
-    if current_user
-      user_id = current_user.id
-    else
+    unless current_user
       @status_check = false
       render
       return
     end
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
-                                   "Port" => 10000 + user_id.to_i,
+                                   "Port" => 10000 + current_user.id.to_i,
                                    "Timeout" => 1,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
@@ -35,7 +33,6 @@ p "check.exception"
       #検索タグがDB内と食い違っているか、またはサーバースクリプトが起動していない
       @status_check = false
 #      current_user.serv.track = nil
-#      return redirect_to user_path(user_id)
     end
 p "status_check="+@status_check.to_s
     render
@@ -60,7 +57,6 @@ p "status_check="+@status_check.to_s
 
   def start
 p "tweets.start"
-    user_id = params["user"]
     track = current_user.serv.track
     d = (ENV["RAILS_ENV"] == "production") ? "./db/production.sqlite3" : "./db/development.sqlite3"
 p "d="+d
@@ -70,18 +66,18 @@ p "d="+d
     a = current_user.a_secret
     unless track
       flash[:alert] = "右側のリストから、タグを指定してください。"
-      render :js => "window.location.href='"+user_path(user_id)+"'"
+      render :js => "window.location.href='"+user_path(current_user)+"'"
       return
     end
     unless (c.present? && k.present? && s.present? && a.present?)
       flash[:alert] = "TwitterAPIを利用するための設定が完了していません。settingメニューから設定してください。"
-      render :js => "window.location.href='"+user_path(user_id)+"'"
+      render :js => "window.location.href='"+user_path(current_user)+"'"
       return
     end      
 
     begin
-p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &"
-      ret = system("ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &")
+p "ruby myserv.rb -p#{current_user.id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &"
+      ret = system("ruby myserv.rb -p#{current_user.id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d} &")
 
       current_user.serv.start if ret
       ret = system("sleep 5")
@@ -89,7 +85,7 @@ p "ruby myserv.rb -p#{user_id.to_i} -t#{track} -c#{c} -k#{k} -s#{s} -a#{a} -d#{d
 p "start.exception"
       p $!
       current_user.serv.down
-      render :js => "window.location.href='"+user_path(user_id)+"'"
+      render :js => "window.location.href='"+user_path(current_user)+"'"
       return
 
     end
@@ -99,7 +95,6 @@ p "start.exception"
 
   def store
 p "tweets.store"
-p "user_id="+current_user.id.to_s
 p "store:track="+current_user.serv.track
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
@@ -135,11 +130,9 @@ p "server_status="+current_user.serv.status.to_s
   def stop
 p "tweets.stop"
 #p "status="+current_user.serv.status.to_s
-    user_id = params["user"]
-
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
-                                   "Port" => 10000 + user_id.to_i,
+                                   "Port" => 10000 + current_user.id.to_i,
                                    "Timeout" => 1,
                                    "Telnetmode" => false,
                                    "Output_log" => "./output.log",
@@ -157,8 +150,13 @@ p "tweets.stop"
     end
     current_user.serv.stop if current_user.serv
 #p "status="+current_user.serv.status.to_s
-    render :js => "window.location.href='"+user_path(user_id)+"'"
-    return
+#    render :js => "window.location.href='"+user_path(current_user)+"'"
+#    respond_with current_user, :location => user_path(current_user)
+    respond_to do |format|
+      format.html {redirect_to current_user}
+      format.js {redirect_to current_user}
+    end
+#    return
 #    render
 
   end
@@ -207,7 +205,10 @@ p "tweets.stop"
 
   private
     def correct_user
-      redirect_to root_url if current_user.serv.nil?
+p "tweets.correct_user"
+#      redirect_to root_url if current_user.serv.nil?
+#      redirect_to user_path(current_user) unless current_user.admin
+      redirect_to root_url unless current_user.admin
     end
 
 end
