@@ -1,5 +1,5 @@
 <li>
-  <span class="track"><%= link_to(track.tag, graph_tweets_path(:user => track.user, :track => track.tag)) %></span>
+  <span class="track"><%= link_to(track.tag, graph_tweet_path(track.user, track: track.tag)) %></span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(track.created_at) %> ago.
   </span>
@@ -8,7 +8,7 @@
     <br />
     <% if current_user.admin? %>
       <%= ((current_user.serv.track == track.tag) ? "○" : "　") %>
-      <%= link_to("タグをセット", track_tweets_path(:track => track.tag, :user => track.user)) %>
+      <%= link_to("タグをセット", track_tweet_path(track.user, track: track.tag)) %>
     <% end %>
   <% end %>
 </li>

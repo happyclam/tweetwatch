@@ -1,7 +1,7 @@
 <%= javascript_tag do %>
 $(document).ready(function(){
     $.ajax({
-        url: '<%= check_tweets_path %>', 
+        url: '<%= check_tweet_path(id: @user.id) %>', 
         data: {},
         dataType: "script"
     }).done(function(data, status, xhr) {
@@ -23,10 +23,10 @@ $(document).ready(function(){
       <div id="server_status">
       </div>
       <div id="server_start">
-        <%= link_to("サーバー起動", start_tweets_path(:user => @user, :format => :js), :remote => true) %>
+        <%= link_to("サーバー起動", start_tweet_path(@user, format: :js), :remote => true) %>
       </div>
       <div id="server_stop">
-        <%= link_to("サーバー停止", stop_tweets_path(:user => @user, :format => :js), :remote => true) %>
+        <%= link_to("サーバー停止", stop_tweet_path(@user, format: :js), :remote => true) %>
       </div>
     <% end %>
   </aside>

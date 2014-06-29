@@ -172,7 +172,7 @@ p "tweets.stop"
     else
       flash[:alert] = "Error"
     end
-    return redirect_to user_path(params["user"])
+    return redirect_to user_path(params["id"])
 
   end
 
@@ -180,7 +180,7 @@ p "tweets.stop"
 #    render :text => "params=#{params.to_s}"
 #p params
     @track = params["track"]
-    @user = User.find(params["user"])
+    @user = User.find(params["id"])
     condition = "%" + @track.sub("#", "") + "%" 
     ret = @user.tweets.where('post_hashtags like ?', condition).group(:user_text).order('count_user_text desc').count('user_text')
 

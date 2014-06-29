@@ -38,7 +38,7 @@ Tweetwatch::Application.routes.draw do
   # match '/tweets/store', :to => 'tweets#store', via: 'get'
   # match '/tweets/stop',  :to => 'tweets#stop',  via: 'get'
   resources :tweets, except: [:index, :create, :new, :show, :edit, :update, :destroy] do
-    collection do
+    member do
       get 'check'
       get 'start'
       get 'store'

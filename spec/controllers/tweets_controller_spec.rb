@@ -9,48 +9,52 @@ describe TweetsController do
     let(:admin) { FactoryGirl.create(:admin) }
     before { sign_in admin, no_capybara: true }
   end
-  describe "ログインしてようがしてなかろうがcheckは通る" do
-    it {
-      get 'check', format: :js
+  describe "ログインしてようがしてなかろうが許可されるmethod" do
+    let(:user) { FactoryGirl.create(:user) }
+    it "GET check" do
+      get 'check', format: :js, id: user
       expect(response).to be_success
-    }
+    end 
+    it "GET graph" do
+      get 'graph', track: "#NHK", id: user
+      expect(response).to be_success
+    end
   end
   describe "未ログイン" do
+    let(:user) { FactoryGirl.create(:user) }
     it "GET stop" do
-      get 'stop', format: :js
+      get 'stop', format: :js, id: user
       expect(response).to redirect_to(signin_path)
     end
     it "GET track" do
-      get 'track', track: "#tvosaka"
+      get 'track', track: "#tvosaka", id: user
       expect(response).to redirect_to(signin_path)
     end
   end
   describe "ログイン後" do
     include_examples "login as user"
     it "GET stop" do
-      get 'stop', format: :js, user: user.id
+      get 'stop', format: :js, id: user.id
       expect(response).to redirect_to(root_url)
     end
     it "GET track" do
-      get 'track', track: "#tvosaka", user: user
+      get 'track', track: "#tvosaka", id: user
       expect(response).to redirect_to(root_url)
     end
   end
-  describe "adminでログイン後stop" do
-    include_examples "login as admin"
-    it "GET stop" do
-      get 'stop', format: :js, user: admin.id
-      expect(response).to redirect_to(user_path(admin))
-    end
-  end
-  describe "adminでログイン後track" do
+  describe "adminでログイン後" do
     include_examples "login as admin"
     before{
       controller.stub(:current_user).and_return(admin)
+      controller.stub_chain("current_user.serv.stop").and_return(admin.serv.stop)
       controller.stub_chain("current_user.serv.status").and_return(admin.serv.status)
     }
+    it "GET stop" do
+      get 'stop', format: :js, id: admin.id
+      expect(response).to redirect_to(user_path(admin))
+    end
     it "GET track" do
-      get 'track', track: "#tvosaka", user: admin
+      get 'track', track: "#tvosaka", id: admin
       expect(response).to redirect_to(user_path(admin))
     end
   end

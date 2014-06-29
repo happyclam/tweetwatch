@@ -5,7 +5,7 @@
     <%= link_to feed_item.user.name, feed_item.user %>
   </span>
 -->
-  <span class="track"><%= link_to(feed_item.tag, graph_tweets_path(:user => feed_item.user, :track => feed_item.tag)) %></span>
+  <span class="track"><%= link_to(feed_item.tag, graph_tweet_path(feed_item.user, track: feed_item.tag)) %></span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(feed_item.created_at) %> ago.
   </span>
