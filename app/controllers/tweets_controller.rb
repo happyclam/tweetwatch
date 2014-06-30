@@ -59,7 +59,6 @@ p "status_check="+@status_check.to_s
 p "tweets.start"
     track = current_user.serv.track
     d = (ENV["RAILS_ENV"] == "production") ? "./db/production.sqlite3" : "./db/development.sqlite3"
-p "d="+d
     c = current_user.c_key
     k = current_user.c_secret
     s = current_user.a_key
@@ -95,7 +94,7 @@ p "start.exception"
 
   def store
 p "tweets.store"
-p "store:track="+current_user.serv.track
+p "store:track="+current_user.serv.track.to_s
     begin
       localhost = Net::Telnet::new("Host" => "localhost",
                                    "Port" => 10000 + current_user.id,
@@ -123,7 +122,7 @@ p "store.exception"
     end
 p "status_store="+@status_store.to_s
 p "server_status="+current_user.serv.status.to_s
-    redirect_to user_path(current_user.id)
+    redirect_to user_path(current_user)
 
   end
 
@@ -153,8 +152,8 @@ p "tweets.stop"
 #    render :js => "window.location.href='"+user_path(current_user)+"'"
 #    respond_with current_user, :location => user_path(current_user)
     respond_to do |format|
-      format.html
-      format.js {redirect_to current_user}
+      format.html {redirect_to user_path(current_user)}
+      format.js {render :js => "window.location.href='"+user_path(current_user)+"'"}
     end
 #    return
 #    render

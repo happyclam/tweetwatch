@@ -30,8 +30,16 @@ describe TweetsController do
       get 'track', track: "#tvosaka", id: user
       expect(response).to redirect_to(signin_path)
     end
+    it "GET start" do
+      get 'start', id: user
+      expect(response).to redirect_to(signin_path)
+    end
+    it "GET store" do
+      get 'store', id: user
+      expect(response).to redirect_to(signin_path)
+    end
   end
-  describe "ログイン後" do
+  describe "admin以外でログイン後" do
     include_examples "login as user"
     it "GET stop" do
       get 'stop', format: :js, id: user.id
@@ -41,6 +49,14 @@ describe TweetsController do
       get 'track', track: "#tvosaka", id: user
       expect(response).to redirect_to(root_url)
     end
+    it "GET start" do
+      get 'start', id: user
+      expect(response).to redirect_to(root_url)
+    end
+    it "GET store" do
+      get 'store', id: user
+      expect(response).to redirect_to(root_url)
+    end
   end
   describe "adminでログイン後" do
     include_examples "login as admin"
@@ -48,23 +64,28 @@ describe TweetsController do
       controller.stub(:current_user).and_return(admin)
       controller.stub_chain("current_user.serv.stop").and_return(admin.serv.stop)
       controller.stub_chain("current_user.serv.status").and_return(admin.serv.status)
+      controller.stub_chain("current_user.serv.track").and_return(admin.serv.track)
+      controller.stub_chain("current_user.serv.store").and_return(admin.serv.store)
     }
     it "GET stop" do
       get 'stop', format: :js, id: admin.id
+      expect(response).to be_success
+    end
+    it "GET stop" do
+      get 'stop', id: admin.id
       expect(response).to redirect_to(user_path(admin))
     end
     it "GET track" do
       get 'track', track: "#tvosaka", id: admin
       expect(response).to redirect_to(user_path(admin))
     end
+    it "GET start" do
+      get 'start', id: admin
+      expect(response).to be_success
+    end
+    it "GET store" do
+      get 'store', id: admin
+      expect(response).to redirect_to(user_path(admin))
+    end
   end
-  # describe "for non-signed-in users" do
-  #   let(:user) {FactoryGirl.create(:user)}
-  #   describe "in the Tweets controller" do
-  #     describe "submitting to the check action" do
-  #       before {get 'check', format: :js}
-  #       specify {expect(response).to redirect_to(signin_path)}
-  #     end
-  #   end
-  # end
 end

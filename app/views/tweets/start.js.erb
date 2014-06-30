@@ -1,6 +1,6 @@
 <% if current_user.serv.status == PREPARED -%>
   $.ajax({
-      url: '/tweets/store', 
+      url: '<%= store_tweet_path(current_user) %>', 
       data: {},
       dataType: "html"
   }).done(function(data, status, xhr) {
@@ -10,6 +10,8 @@
       $('#server_stop').show(500);
   }).fail(function(xhr, status, error) {
       alert('Error Occured(' + error + ' in start.js)');
+      $('#server_status').html("status = not prepared");
+      $('#server_stop').show(500);
   });
 <% else -%>
   $('#server_status').html("status = not prepared");
