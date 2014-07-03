@@ -37,11 +37,6 @@ p "check.exception"
 p "status_check="+@status_check.to_s
     render
 
-    # if @status_check
-    #   @status_str = "検索タグ:" + current_user.serv.track + " - status:集計中"
-    # else
-    #   @status_str = "検索タグ:" + current_user.serv.track + " - status:停止中"
-    # end
 # jq_str = <<"JQ_STR"
 #   $('#server_status').html("#{@status_str}");
 #   $('#server_start').hide(500);
@@ -155,14 +150,10 @@ p "tweets.stop"
       format.html {redirect_to user_path(current_user)}
       format.js {render :js => "window.location.href='"+user_path(current_user)+"'"}
     end
-#    return
-#    render
 
   end
 
   def track
-#    user = User.find(params["user"])
-#    user.serv.track = params["track"]
     case current_user.serv.status
     when DOWN
       current_user.serv.update_attribute(:track, params["track"])
@@ -176,8 +167,6 @@ p "tweets.stop"
   end
 
   def graph
-#    render :text => "params=#{params.to_s}"
-#p params
     @track = params["track"]
     @user = User.find(params["id"])
     condition = "%" + @track.sub("#", "") + "%" 

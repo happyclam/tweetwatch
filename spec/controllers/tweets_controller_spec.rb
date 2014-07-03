@@ -88,4 +88,36 @@ describe TweetsController do
       expect(response).to redirect_to(user_path(admin))
     end
   end
+#  def mock_serv(stubs={})
+#    @mock_serv ||= mock_model(Serv, stubs)
+#  end
+  describe "adminでログイン後(仮)" do
+    include_examples "login as admin"
+#    let(:serv) {double("Serv")}
+#    let(:serv) {FactoryGirl.create(:serv, user_id: admin.id)}
+#    let(:serv) {admin.build_serv(track: "#tvosaka")}
+    before{
+      admin.build_serv(track: "#NHK")
+      controller.stub(:current_user).and_return(admin)
+      controller.stub_chain("current_user.serv").and_return(admin.serv)
+      controller.stub_chain("current_user.serv.status").and_return(DOWN)
+#      @serv = mock_model(Serv, :user_id => admin.id)
+    }
+#    Serv.should_receive(:find).with(user_id: admin.id).and_return(serv)
+    it "GET track & status==DOWN" do
+      get 'track', track: "#tvosaka", id: admin
+#      admin.serv.should_receive(:update_attributes).and_return(true)
+#      expect(serv).to receive(:update_attributes).with(:track => "#tvosaka"){true}
+#      serv.should_receive(:update_attributes).with(:track => "#tvosaka")
+#      @serv.should_receive(:update_attributes).with(:track => "#tvosaka")
+    end
+    before{
+      controller.stub(:current_user).and_return(admin)
+      controller.stub_chain("current_user.serv.status").and_return(PREPARED)
+    }
+    it "GET track & status==PREPARED" do
+      get 'track', track: "#tvosaka", id: admin
+      flash[:alert].should == "サーバーを停止してから選択してください"
+    end
+  end
 end

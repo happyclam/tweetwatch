@@ -7,13 +7,11 @@
       $('#server_status').html("検索タグ:<%= current_user.serv.track %> - status:集計中");
       $("[class^='alert alert-alert']").empty();
       $('#server_start').hide(500);
-      $('#server_stop').show(500);
   }).fail(function(xhr, status, error) {
       alert('Error Occured(' + error + ' in start.js)');
       $('#server_status').html("status = not prepared");
-      $('#server_stop').show(500);
   });
 <% else -%>
   $('#server_status').html("status = not prepared");
-  $('#server_stop').show(500);
 <% end -%>
+$('#server_stop').show(500);
