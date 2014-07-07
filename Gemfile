@@ -62,6 +62,6 @@ end
 group :production do
 #  gem 'pg'
   gem 'rails_12factor'
-#   gem 'therubyracer'
-#   gem 'execjs'
+  gem 'therubyracer'
+  gem 'execjs'
 end
