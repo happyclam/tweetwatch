@@ -56,6 +56,7 @@ Tweetwatch::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :tracks, only: [:create, :destroy]
   resources :users
+  match '*not_found' => 'application#render_404', via: 'get'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 describe "StaticPages" do
+  let(:base_title) {"Tweet Watch App"}
   describe "Home page" do
     before { visit root_path }
     it "should have the content 'Tweet Watch'" do
       expect(page).to have_content('Tweet Watch')
     end
     it "should have the base title" do
-      expect(page).to have_title("Tweet Watch App")
+      expect(page).to have_title(base_title)
     end
     it "should not have a custom page title" do
       expect(page).not_to have_title('| Home')
@@ -35,7 +36,7 @@ describe "StaticPages" do
       expect(page).to have_content('Contact')
     end
     it "should have the title 'Contact'" do
-      expect(page).to have_title("Tweet Watch App | Contact")
+      expect(page).to have_title("#{base_title} | Contact")
     end
   end
 end
