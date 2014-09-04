@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.2'
 
 gem 'rails', '4.0.2'
 gem 'bootstrap-sass'
@@ -14,6 +14,8 @@ gem 'jbuilder', '~> 1.2'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+gem 'therubyracer'
+gem 'execjs'
 
 group :doc do
   gem 'sdoc', require: false
@@ -62,6 +64,4 @@ end
 group :production do
 #  gem 'pg'
   gem 'rails_12factor'
-  gem 'therubyracer'
-  gem 'execjs'
 end
