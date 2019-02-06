@@ -1,7 +1,8 @@
+# gem "rails"
 source 'https://rubygems.org'
-ruby '2.1.2'
+#ruby '2.1.2'
 
-gem 'rails', '4.0.2'
+#gem 'rails', '4.0.2'
 gem 'bootstrap-sass'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -26,8 +27,9 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.1.2'
+#gem 'bcrypt-ruby', '~> 3.1.2'
 gem 'bcrypt'
+gem 'ruby-graphviz'
 
 # Use unicorn as the app server
 # gem 'unicorn'
