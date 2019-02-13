@@ -2,7 +2,7 @@
 source 'https://rubygems.org'
 ruby '2.4.1'
 
-#gem 'rails', '4.0.2'
+gem 'rails', '4.2.11'
 gem 'bootstrap-sass'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
@@ -46,14 +46,14 @@ gem 'rb-fsevent'
 gem 'twitter-stream'
 gem 'lazy_high_charts'
 gem 'state_machine'
-
+gem 'rest-client', '~> 1.7.3'
 
 
 gem 'sqlite3'
 group :development, :test do
   gem 'rspec-rails'
   gem 'rails-erd'
-  gem 'taps'
+  # gem 'taps'
   gem 'annotate'
 end
 
